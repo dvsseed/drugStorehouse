@@ -11,4 +11,11 @@ The warehouse management for drug store.
 首先, 要至 EasyUI for jQuery ( https://www.jeasyui.com/download/v19.php ) 下載並安裝...
 其次, 再新增資料表格( drugstorehouse.sql )及複製php檔案即可使用了...
 
+安裝環境:
+1. CentOS Linux release 7.7.1908 (Core)
+2. Apache/2.4.6 (CentOS)
+3. mysql  Ver 15.1 Distrib 10.4.11-MariaDB
+4. PHP 5.4.16, Zend Engine v2.4.0
+5. EasyUI 1.4
+
 最後, 因緣際會的是接續這個專案之後, 我用的是 Laravel + Vue ...感覺就是一路直昇!!
