@@ -1,4 +1,4 @@
-# drugStorehouse
+# Drug Store House
 The warehouse management for drug store.
 
 本系統尚未全部完成!!但它是我四年多前做的專案...因某緣故而未繼續執行!!
