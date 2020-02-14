@@ -1,0 +1,5 @@
+[
+	{"notificationid":"不通知","notificationname":"不通知"},
+	{"notificationid":"電子郵件","notificationname":"電子郵件"},
+	{"notificationid":"傳真","notificationname":"傳真"}
+]

@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="keywords" content="jquery,ui,easy,easyui,web">
+	<meta name="description" content="easyui help you build your web page easily!">
+	<title>Build CRUD DataGrid with jQuery EasyUI - jQuery EasyUI Demo</title>
+	<link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/demo/demo.css">
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.min.js"></script>
+	<script type="text/javascript" src="http://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="http://www.jeasyui.com/easyui/jquery.edatagrid.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('#mm_dg').edatagrid({
+				url: '../controllers/get_medical.php',
+				saveUrl: '../controllers/save_medical.php',
+				updateUrl: '../controllers/update_medical.php',
+				destroyUrl: '../controllers/destroy_medical.php'
+			});
+		});
+	</script>
+</head>
+<body>
+	<h2>CRUD DataGrid</h2>
+	<div class="demo-info" style="margin-bottom:10px">
+		<div class="demo-tip icon-tip">&nbsp;</div>
+		<div>Double click the row to begin editing.</div>
+	</div>
+	
+	<table id="mm_dg" title="My Users" style="width:1200px;height:600px"
+			url="../controllers/get_medical.php"
+			saveUrl="../controllers/save_medical.php"
+			updateUrl="../controllers/update_medical.php"
+			destroyUrl="../controllers/destroy_medical.php"
+			toolbar="#mm_toolbar" pagination="true" idField="id"
+			rownumbers="true" fitColumns="true" singleSelect="true">
+		<thead>
+			<tr>
+				<th field="barcode" width="120" editor="{type:'validatebox',options:{required:true}}">條碼</th>
+				<th field="product_code" width="80" editor="{type:'validatebox',options:{required:true}}">商品代碼</th>
+				<th field="product_english" width="100" editor="text">英文名稱</th>
+				<th field="product_chinese" width="100" editor="text">中文名稱</th>
+				<th field="specification" width="100" editor="text">規格</th>
+				<th field="spec_amount" width="120" editor="text">規格量</th>
+				<th field="spec_unit" width="120" editor="text">規格單位</th>
+				<th field="product_price" width="120" editor="text">價格</th>
+				<th field="product_manufacturer" width="120" editor="text">廠商</th>
+				<th field="remark" width="120" editor="text">備註</th>
+				<th field="agents" width="120" editor="text">代理商</th>
+				<th field="uniform_numbers" width="120" editor="text">統編</th>
+				<th field="phone_orders" width="120" editor="text">訂貨電話</th>
+				<th field="business_representatives" width="120" editor="text">業務代表</th>
+				<th field="mobile_telephone" width="120" editor="text">行動電話</th>
+				<th field="purchase_price" width="120" editor="text">進價</th>
+				<th field="percentage_deduction" width="120" editor="text">扣%</th>
+				<th field="orderunit_rebates" width="120" editor="text">訂貨單位與折扣方式</th>
+				<th field="temporary_purchase" width="120" editor="{type:'combobox',options:{
+	                  url:'../database/purchase.json',
+	                  valueField:'purchaseid',
+	                  textField:'purchasename',
+	                  panelHeight:'auto',
+	                  editable:false
+	               }}">臨採
+				</th>
+				<th field="safety_stock" width="120" editor="text">安全庫存量</th>
+				<th field="selling_price" width="120" editor="text">售價</th>
+				<th field="staff_price" width="120" editor="text">員工價</th>
+				<th field="industry_price" width="120" editor="text">同業價格</th>
+			</tr>
+		</thead>
+	</table>
+	<div id="mm_toolbar">
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:$('#mm_dg').edatagrid('addRow')">新增</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="javascript:$('#mm_dg').edatagrid('destroyRow')">刪除</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="javascript:$('#mm_dg').edatagrid('saveRow')">存檔</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-undo" plain="true" onclick="javascript:$('#mm_dg').edatagrid('cancelRow')">取消</a>
+	</div>
+	
+</body>
+</html>

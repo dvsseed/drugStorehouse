@@ -1,0 +1,226 @@
+	<h4>藥品代理商管理</h4>
+	<p>請直接操作: Datagrid資料列.</p>
+	
+	<table id="da_dg" class="easyui-datagrid" title="藥品代理商" style="width:1200px;height:400px"
+			url="../controllers/get_agents2.php"
+			toolbar="#da_toolbar" pagination="true"
+			rownumbers="true" fitColumns="false" singleSelect="true">
+		<thead>
+			<tr>
+				<th data-options="field:'agents'">代理商</th>
+				<th data-options="field:'uniform_numbers'">代理商統編</th>
+				<th data-options="field:'payment_method'">收款方式</th>
+				<th data-options="field:'term_receivables'">收款期限</th>
+				<th data-options="field:'percentage_deduction'">扣%</th>
+				<th data-options="field:'payee_account'">收款人戶名</th>
+				<th data-options="field:'beneficiary_bank'">收款銀行</th>
+				<th data-options="field:'branch_categories'">分行別</th>
+				<th data-options="field:'beneficiary_account'">收款人帳號</th>
+				<th data-options="field:'fee_burden'">手續費負擔</th>
+				<th data-options="field:'payee_uninumbers'">收款人統編</th>
+				<th data-options="field:'accounts_notification'">帳款通知方式</th>
+				<th data-options="field:'e_mail'">電子郵件</th>
+				<th data-options="field:'fax_number'">傳真號碼</th>
+				<th data-options="field:'phone_number'">電話號碼</th>
+				<th data-options="field:'phone_orders'">訂貨電話</th>
+			</tr>
+		</thead>
+	</table>
+
+	<div id="da_toolbar">
+		<select id="dasearch_field">
+			<option value="agents">代理商</option>
+			<option value="uniform_numbers">代理商統編</option>
+		</select>
+		<input id="dasearch_what" style="line-height:15px;border:1px solid #ccc" />
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="dadoSearch()">搜尋</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="danewUser()" style="color:blue;">新增</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="daeditUser()" style="color:blue;">修改</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="dadestroyUser()" style="color:blue;">刪除</a>
+	</div>
+	
+	<div id="da_dlg" class="easyui-dialog" style="width:350px;height:500px;padding:5px 5px"
+			closed="true" buttons="#da_dlg-buttons">
+		<div class="ftitle">代理商資料</div>
+		<form id="da_fm" method="post" novalidate>
+			<div class="fitem">
+				<label>代理商:</label>
+				<input name="agents" class="easyui-textbox" required="true">
+			</div>
+			<div class="fitem">
+				<label>代理商統編:</label>
+				<input name="uniform_numbers" class="easyui-textbox" required="true">
+			</div>
+			<div class="fitem">
+				<label>收款方式:</label>
+				<input class="easyui-combobox" name="payment_method"
+				        data-options="
+				            url:'../database/payment.json',
+				            valueField:'paymentid',
+				            textField:'paymentname',
+				            panelHeight:'auto'
+							">
+			</div>
+			<div class="fitem">
+				<label>收款期限:</label>
+				<input class="easyui-combobox" name="term_receivables"
+				        data-options="
+				            url:'../database/receivables.json',
+				            valueField:'receivablesid',
+				            textField:'receivablesname',
+				            panelHeight:'auto'
+							">
+			</div>
+			<div class="fitem">
+				<label>扣%:</label>
+				<input class="easyui-combobox" name="percentage_deduction"
+				        data-options="
+				            url:'../database/deduction.json',
+				            valueField:'deductionid',
+				            textField:'deductionname',
+				            panelHeight:'auto'
+							">
+			</div>
+			<div class="fitem">
+				<label>收款人戶名:</label>
+				<input name="payee_account" type="text" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>收款銀行:</label>
+				<input name="beneficiary_bank" type="text" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>分行別:</label>
+				<input name="branch_categories" type="text" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>收款人帳號:</label>
+				<input name="beneficiary_account" type="text" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>手續費負擔:</label>
+				<input name="fee_burden" type="text" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>收款人統編:</label>
+				<input name="payee_uninumbers" type="text" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>帳款通知方式:</label>
+				<input class="easyui-combobox" name="accounts_notification"
+				        data-options="
+				            url:'../database/notification.json',
+				            valueField:'notificationid',
+				            textField:'notificationname',
+				            panelHeight:'auto'
+							">
+			</div>
+			<div class="fitem">
+				<label>電子郵件:</label>
+				<input name="e_mail" type="text" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>傳真號碼:</label>
+				<input name="fax_number" id="level" type="text" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>電話號碼:</label>
+				<input name="phone_number" id="level" type="text" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>訂貨電話:</label>
+				<input name="phone_orders" id="level" type="text" class="easyui-textbox">
+			</div>
+		</form>
+	</div>
+	<div id="da_dlg-buttons">
+		<a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="dasaveUser()" style="width:90px">存檔</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#da_dlg').dialog('close')" style="width:90px">取消</a>
+	</div>
+	<script type="text/javascript">
+		var daurl;
+		function dadoSearch(){
+			$('#da_dg').datagrid('load',{
+				dasearch_field: $('#dasearch_field').val(),
+				dasearch_what: $('#dasearch_what').val()
+			});
+		}
+		function danewUser(){
+			$('#da_dlg').dialog('open').dialog('setTitle','新增代理商');
+			$('#da_fm').form('clear');
+			daurl = '../controllers/save_agents.php';
+		}
+		function daeditUser(){
+			var row = $('#da_dg').datagrid('getSelected');
+			if (row){
+				$('#da_dlg').dialog('open').dialog('setTitle','修改代理商');
+				$('#da_fm').form('load',row);
+				daurl = '../controllers/update_agents.php?id='+row.id;
+			}
+		}
+		function dasaveUser(){
+			$('#da_fm').form('submit',{
+				url: daurl,
+				onSubmit: function(){
+					return $(this).form('validate');
+				},
+				success: function(result){
+					var result = eval('('+result+')');
+					if (result.errorMsg){
+						$.messager.show({
+							title: '錯誤',
+							msg: result.errorMsg
+						});
+					} else {
+						$('#da_dlg').dialog('close');		// close the dialog
+						$('#da_dg').datagrid('reload');	// reload the user data
+					}
+				},
+				error: function(){
+					alert('error!');
+				}
+			});
+		}
+		function dadestroyUser(){
+			var row = $('#da_dg').datagrid('getSelected');
+			if (row){
+				$.messager.confirm('Confirm','您確認要刪除這間代理商嗎?',function(r){
+					if (r){
+						$.post('../controllers/destroy_agents.php',{id:row.id},function(result){
+							if (result.success){
+								$('#da_dg').datagrid('reload');	// reload the user data
+							} else {
+								$.messager.show({	// show error message
+									title: 'Error',
+									msg: result.errorMsg
+								});
+							}
+						},'json');
+					}
+				});
+			}
+		}
+	</script>
+	<style type="text/css">
+		#da_fm{
+			margin:0;
+			padding:5px 5px;
+		}
+		.ftitle{
+			font-size:14px;
+			font-weight:bold;
+			padding:5px 0;
+			margin-bottom:1px;
+			border-bottom:1px solid #ccc;
+		}
+		.fitem{
+			margin-bottom:1px;
+		}
+		.fitem label{
+			display:inline-block;
+			width:80px;
+		}
+		.fitem input{
+			width:160px;
+		}
+	</style>

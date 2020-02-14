@@ -1,0 +1,6 @@
+[
+	{"paymentid":"現金","paymentname":"現金"},
+	{"paymentid":"匯款","paymentname":"匯款"},
+	{"paymentid":"支票","paymentname":"支票"},
+	{"paymentid":"其他","paymentname":"其他"}
+]

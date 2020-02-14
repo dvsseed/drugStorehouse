@@ -1,0 +1,135 @@
+
+  	<h4>使用者管理</h4>
+	<p>請直接操作: Datagrid工作列.</p>
+
+	<table id="dg" title="使用者表格" class="easyui-datagrid" style="width:800px;height:600px"
+			url="../controllers/get_users.php"
+			toolbar="#toolbar" pagination="true"
+			rownumbers="true" fitColumns="true" singleSelect="true">
+		<thead>
+			<tr>
+				<th field="account" width="50" align="center">帳號</th>
+				<th field="password" width="50" align="center">密碼</th>
+				<th field="suname" width="50" align="center">姓名</th>
+				<th field="theme" width="50" align="center">主題</th>
+				<th field="level" width="50" align="center">等級</th>
+			</tr>
+		</thead>
+	</table>
+	<div id="toolbar">
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newUser()" style="color:blue;">新增</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editUser()" style="color:blue;">修改</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyUser()" style="color:blue;">刪除</a>
+	</div>
+	
+	<div id="dlg" class="easyui-dialog" style="width:400px;height:320px;padding:10px 20px"
+			closed="true" buttons="#dlg-buttons">
+		<div class="ftitle">使用者資料</div>
+		<form id="fm" method="post" novalidate>
+			<div class="fitem">
+				<label>帳號:</label>
+				<input name="account" class="easyui-textbox" required="true">
+			</div>
+			<div class="fitem">
+				<label>密碼:</label>
+				<input name="password" type="password" class="easyui-textbox" required="true">
+			</div>
+			<div class="fitem">
+				<label>姓名:</label>
+				<input name="suname" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>主題:</label>
+				<input name="theme" type="text" class="easyui-textbox" data-options="value:'default'">
+			</div>
+			<div class="fitem">
+				<label>等級:</label>
+				<input name="level" id="level" type="text" class="easyui-numberbox" data-options="min:1,max:9,value:1">
+			</div>
+		</form>
+	</div>
+	<div id="dlg-buttons">
+		<a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveUser()" style="width:90px">存檔</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">取消</a>
+	</div>
+	<script type="text/javascript">
+		var url;
+		function newUser(){
+			$('#dlg').dialog('open').dialog('setTitle','新增使用者');
+			$('#fm').form('clear');
+			url = '../controllers/save_user.php';
+		}
+		function editUser(){
+			var row = $('#dg').datagrid('getSelected');
+			if (row){
+				$('#dlg').dialog('open').dialog('setTitle','修改使用者');
+				$('#fm').form('load',row);
+				url = '../controllers/update_user.php?id='+row.id;
+			}
+		}
+		function saveUser(){
+			$('#fm').form('submit',{
+				url: url,
+				onSubmit: function(){
+					return $(this).form('validate');
+				},
+				success: function(result){
+					var result = eval('('+result+')');
+					if (result.errorMsg){
+						$.messager.show({
+							title: '錯誤',
+							msg: result.errorMsg
+						});
+					} else {
+						$('#dlg').dialog('close');		// close the dialog
+						$('#dg').datagrid('reload');	// reload the user data
+					}
+				}
+			});
+		}
+		function destroyUser(){
+			var row = $('#dg').datagrid('getSelected');
+			if (row){
+				$.messager.confirm('Confirm','您確認要刪除這位使用者嗎?',function(r){
+					if (r){
+						$.post('../controllers/destroy_user.php',{id:row.id},function(result){
+							if (result.success){
+								$('#dg').datagrid('reload');	// reload the user data
+							} else {
+								$.messager.show({	// show error message
+									title: 'Error',
+									msg: result.errorMsg
+								});
+							}
+						},'json');
+					}
+				});
+			}
+		}
+		// $(document).ready(function(){
+		// $('#dtheme').textbox('setValue', 'default');
+		// }
+	</script>
+	<style type="text/css">
+		#fm{
+			margin:0;
+			padding:10px 30px;
+		}
+		.ftitle{
+			font-size:14px;
+			font-weight:bold;
+			padding:5px 0;
+			margin-bottom:10px;
+			border-bottom:1px solid #ccc;
+		}
+		.fitem{
+			margin-bottom:5px;
+		}
+		.fitem label{
+			display:inline-block;
+			width:80px;
+		}
+		.fitem input{
+			width:160px;
+		}
+	</style>

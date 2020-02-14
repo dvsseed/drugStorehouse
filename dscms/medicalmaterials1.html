@@ -1,0 +1,297 @@
+	<h4>醫材資料管理</h4>
+	<p>請直接操作: Datagrid資料列.</p>
+	<div style="margin:20px 0;"></div>
+	
+	<table id="mm_dg" class="easyui-datagrid" title="醫材資料" style="width:1200px;height:400px"
+			data-options="
+				iconCls: 'icon-edit',
+				singleSelect: true,
+				rownumbers: true,
+				pagination: true,
+				fitColumns: false,
+				toolbar: '#mm_tb',
+				url: '../controllers/get_medical1.php',
+				onClickRow: mmonClickRow
+			">
+		<thead>
+			<tr>
+				<th data-options="field:'barcode',width:120,editor:'textbox'">條碼</th>
+				<th data-options="field:'medical_code',width:100,editor:{type:'numberbox',options:{required:true}}">商品代碼</th>
+				<th data-options="field:'medical_english',width:100,editor:'textbox'">英文名稱</th>
+				<th data-options="field:'medical_chinese',width:100,editor:'textbox'">中文名稱</th>
+				<th data-options="field:'specification',width:100,editor:'textbox'">規格</th>
+				<th data-options="field:'spec_amount',width:120,align:'right',editor:'textbox'">規格量</th>
+				<th data-options="field:'spec_unit',width:120,editor:'textbox'">規格單位</th>
+				<th data-options="field:'medical_price',width:120,align:'right',editor:'textbox'">價格</th>
+				<th data-options="field:'medical_manufacturer',width:120,editor:'textbox'">廠商</th>
+				<th data-options="field:'remark',width:120,editor:'textbox'">備註</th>
+				<th data-options="field:'agents',width:120,editor:'textbox'">代理商</th>
+				<th data-options="field:'uniform_numbers',width:120,editor:'textbox'">統編</th>
+				<th data-options="field:'phone_orders',width:120,editor:'textbox'">訂貨電話</th>
+				<th data-options="field:'business_representatives',width:120,editor:'textbox'">業務代表</th>
+				<th data-options="field:'mobile_telephone',width:120,editor:'textbox'">行動電話</th>
+				<th data-options="field:'purchase_price',width:120,align:'right',editor:'textbox'">進價</th>
+				<th data-options="field:'percentage_deduction',width:120,align:'right',editor:'textbox'">扣%</th>
+				<th data-options="field:'orderunit_rebates',width:120,editor:'textbox'">訂貨單位與折扣方式</th>
+				<th data-options="field:'temporary_purchase',width:200,
+						formatter:function(value,row){
+							return row.temporary_purchase;
+						},
+						editor:{
+							type:'combobox',
+							options:{
+								valueField:'purchaseid',
+								textField:'purchasename',
+								method:'get',
+								url:'../database/purchase.json'
+							}
+						}">臨採方式</th>
+				<th data-options="field:'safety_stock',width:120,align:'right',editor:'textbox'">安全庫存量</th>
+				<th data-options="field:'selling_price',width:120,align:'right',editor:'textbox'">售價</th>
+				<th data-options="field:'staff_price',width:120,align:'right',editor:'textbox'">員工價</th>
+				<th data-options="field:'industry_price',width:120,align:'right',editor:'textbox'">同業價格</th>
+			</tr>
+		</thead>
+	</table>
+
+	<div id="mm_tb" style="height:auto">
+		<select id="mmsearch_field">
+			<option value="barcode">條碼</option>
+			<option value="medical_code">商品代碼</option>
+			<option value="medical_english">英文名稱</option>
+		</select>
+		<input id="mmsearch_what" style="line-height:15px;border:1px solid #ccc" />
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="mmdoSearch()">搜尋</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="mmappend()" style="color:blue;">新增</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="mmremoveit()" style="color:blue;">刪除</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="mmaccept()" style="color:blue;">存檔</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="mmreject()" style="color:blue;">取消</a>
+		<!-- a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="getChanges()">GetChanges</a -->
+	</div>
+	
+	<script type="text/javascript">
+		var mmeditIndex = undefined;
+		function mmdoSearch(){
+			$('#mm_dg').datagrid('load',{
+				mmsearch_field: $('#mmsearch_field').val(),
+				mmsearch_what: $('#mmsearch_what').val()
+			});
+		}
+		function mmendEditing(){
+			if (mmeditIndex == undefined){return true}
+			if ($('#mm_dg').datagrid('validateRow', mmeditIndex)){
+				var ed = $('#mm_dg').datagrid('getEditor', {index:mmeditIndex,field:'barcode'});
+				var temporarypurchase = $(ed.target).combobox('getText');
+				$('#mm_dg').datagrid('getRows')[mmeditIndex]['temporary_purchase'] = temporarypurchase;
+				$('#mm_dg').datagrid('endEdit', mmeditIndex);
+				mmeditIndex = undefined;
+				return true;
+			} else {
+				return false;
+			}
+		}
+		function mmonClickRow(index){
+			if (mmeditIndex != index){
+				if (mmendEditing()){
+					$('#mm_dg').datagrid('selectRow', index).datagrid('beginEdit', index);
+					mmeditIndex = index;
+				} else {
+					$('#mm_dg').datagrid('selectRow', mmeditIndex);
+				}
+			}
+		}
+		function mmappend(){
+			if (mmendEditing()){
+				// $('#mm_dg').datagrid('endEdit', mmeditIndex);
+				$('#mm_dg').datagrid('appendRow',{
+	                barcode:'',
+	                medical_code:'',
+	                medical_english:'',
+	                medical_chinese:'',
+                    specification:'',
+                    spec_amount:'',
+                    spec_unit:'',
+                    medical_price:'',
+                    medical_manufacturer:'',
+                    remark:'',
+                    agents:'',
+                    uniform_numbers:'',
+                    phone_orders:'',
+                    business_representatives:'',
+                    mobile_telephone:'',
+                    purchase_price:'',
+                    percentage_deduction:'',
+                    orderunit_rebates:'',
+                    temporary_purchase:'',
+                    safety_stock:'',
+                    selling_price:'',
+                    staff_price:'',
+                    industry_price:''
+				});
+				mmeditIndex = $('#mm_dg').datagrid('getRows').length-1;
+				$('#mm_dg').datagrid('selectRow', mmeditIndex).datagrid('beginEdit', mmeditIndex);
+				// $('#mm_dg').datagrid('reload');    // reload the current page data
+			}
+		}
+		function mmremoveit(){
+			if (mmeditIndex == undefined){return}
+            var row = $('#mm_dg').datagrid('getSelected');
+            if (row){
+				$.messager.confirm('Confirm','您確認要刪除這項醫材資料嗎?',function(r){
+					if (r){
+						$('#mm_dg').datagrid('cancelEdit', mmeditIndex).datagrid('deleteRow', mmeditIndex);
+						// $.post('../controllers/destroy_medical.php',{id:row.id},function(result){
+						// 	if (result.success){
+						// 		$('#mm_dg').datagrid('cancelEdit', mmeditIndex).datagrid('deleteRow', mmeditIndex);
+						// 	} else {
+						// 		$.messager.show({	// show error message
+						// 			title: 'Error',
+						// 			msg: result.errorMsg
+						// 		});
+						// 	}
+						// },'json');
+		                $.ajax({
+		                    url:"../controllers/destroy_medical.php",
+		                    type:"post",
+		                    data:{"id":row.id},
+							success: function(msg){
+								alert(msg);
+								// alert(mmeditIndex);
+								// $('#mm_dg').datagrid('cancelEdit', mmeditIndex).datagrid('deleteRow', mmeditIndex);
+								// $('#mm_dg').datagrid('reload');
+							},
+							error:function(xhr, ajaxOptions, thrownError){
+								alert(xhr.status);
+								alert(thrownError);
+							}
+		                });
+					} else {
+						$('#mm_dg').datagrid('rejectChanges');
+					}
+					mmeditIndex = undefined;
+	            })
+			}
+		}
+		function mmaccept(){
+			if (mmendEditing()){
+				// $('#mm_dg').datagrid('acceptChanges');
+				var inserted = $('#mm_dg').datagrid('getChanges', "inserted");
+				// var deleted = $('#mm_dg').datagrid('getChanges', "deleted");
+				var updated = $('#mm_dg').datagrid('getChanges', "updated");
+				// var effectRow = new Object();
+                var row = $('#mm_dg').datagrid('getSelected'); //獲取選中的行
+                if (row){
+					if (inserted.length) {
+						// alert("i"+inserted);
+						// exit("inserted"+inserted.length);
+				        // effectRow["inserted"] = JSON.stringify(inserted);
+		                $.ajax({
+		                    url:"../controllers/save_medical.php",
+		                    type:"post",
+		                    data:{
+		                        "barcode":row.barcode,
+		                        "medical_code":row.medical_code,
+		                        "medical_english":row.medical_english,
+		                        "medical_chinese":row.medical_chinese,
+		                        "specification":row.specification,
+		                        "spec_amount":row.spec_amount,
+		                        "spec_unit":row.spec_unit,
+		                        "medical_price":row.medical_price,
+		                        "medical_manufacturer":row.medical_manufacturer,
+		                        "remark":row.remark,
+		                        "agents":row.agents,
+		                        "uniform_numbers":row.uniform_numbers,
+		                        "phone_orders":row.phone_orders,
+		                        "business_representatives":row.business_representatives,
+		                        "mobile_telephone":row.mobile_telephone,
+		                        "purchase_price":row.purchase_price,
+		                        "percentage_deduction":row.percentage_deduction,
+		                        "orderunit_rebates":row.orderunit_rebates,
+		                        "temporary_purchase":row.temporary_purchase,
+		                        "safety_stock":row.safety_stock,
+		                        "selling_price":row.selling_price,
+		                        "staff_price":row.staff_price,
+		                        "industry_price":row.industry_price
+		                    },
+							// success: function(msg){
+							// 	alert(msg);
+							// },
+							error:function(xhr, ajaxOptions, thrownError){
+								alert(xhr.status);
+								alert(thrownError);
+							}
+		                });
+					}
+					// if (deleted.length) {
+					// 	// alert("d"+deleted);
+					// 	// exit("deleted"+deleted.length);
+				 //        // effectRow["deleted"] = JSON.stringify(deleted);
+		   //              $.ajax({
+		   //                  url:"../controllers/destroy_medical.php",
+		   //                  type:"post",
+		   //                  data:{"id":row.id},
+					// 		error:function(xhr, ajaxOptions, thrownError){
+					// 			alert(xhr.status);
+					// 			alert(thrownError);
+					// 		}
+		   //              });
+					// }
+					if (updated.length) {
+						// alert("u"+updated);
+						// exit("updated"+updated.length);
+				        // effectRow["updated"] = JSON.stringify(updated);
+		                $.ajax({ //向後台傳送數據
+		                    url:"../controllers/update_medical.php",
+		                    type:"post",
+		                    data:{ //需要傳送到後台的數據
+		                    	"id":row.id,
+		                        "barcode":row.barcode,
+		                        "medical_code":row.medical_code,
+		                        "medical_english":row.medical_english,
+		                        "medical_chinese":row.medical_chinese,
+		                        "specification":row.specification,
+		                        "spec_amount":row.spec_amount,
+		                        "spec_unit":row.spec_unit,
+		                        "medical_price":row.medical_price,
+		                        "medical_manufacturer":row.medical_manufacturer,
+		                        "remark":row.remark,
+		                        "agents":row.agents,
+		                        "uniform_numbers":row.uniform_numbers,
+		                        "phone_orders":row.phone_orders,
+		                        "business_representatives":row.business_representatives,
+		                        "mobile_telephone":row.mobile_telephone,
+		                        "purchase_price":row.purchase_price,
+		                        "percentage_deduction":row.percentage_deduction,
+		                        "orderunit_rebates":row.orderunit_rebates,
+		                        "temporary_purchase":row.temporary_purchase,
+		                        "safety_stock":row.safety_stock,
+		                        "selling_price":row.selling_price,
+		                        "staff_price":row.staff_price,
+		                        "industry_price":row.industry_price
+		                    },
+							// success: function(msg){
+							// 	alert(msg);
+							// },
+							error:function(xhr, ajaxOptions, thrownError){
+								alert(xhr.status);
+								alert(thrownError);
+							}
+		                });
+					}
+				}
+				$('#mm_dg').datagrid('acceptChanges');
+                // var row = $('#mm_dg').datagrid('getSelected'); //獲取選中的行
+                // if (row){
+					$('#mm_dg').datagrid('reload');
+				// }
+			}
+		}
+		function mmreject(){
+			$('#mm_dg').datagrid('rejectChanges');
+			mmeditIndex = undefined;
+		}
+		// function getChanges(){
+		// 	var rows = $('#mm_dg').datagrid('getChanges');
+		// 	alert(rows.length+' rows are changed!');
+		// }
+	</script>

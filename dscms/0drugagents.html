@@ -1,0 +1,174 @@
+	<h4>藥品代理商管理</h4>
+	<p>請直接操作: Datagrid資料列.</p>
+	<div style="margin:20px 0;"></div>
+	
+	<table id="dg" class="easyui-datagrid" title="藥品代理商" style="width:1200px;height:600px"
+			data-options="
+				iconCls: 'icon-edit',
+				singleSelect: true,
+				toolbar: '#tb',
+				url: '../controllers/get_agents.php',
+				method: 'get',
+				onClickRow: onClickRow
+			">
+		<thead>
+			<tr>
+				<th data-options="field:'id',width:80">ID</th>
+				<th data-options="field:'agents',width:120,editor:'textbox'">代理商</th>
+				<th data-options="field:'uniform_numbers',width:80,align:'right',editor:'numberbox'">代理商統編</th>
+				<th data-options="field:'payment_method',width:100,
+						formatter:function(value,row){
+							return row.paymentname;
+						},
+						editor:{
+							type:'combobox',
+							options:{
+								valueField:'paymentid',
+								textField:'paymentname',
+								method:'get',
+								url:'../database/payment.json',
+								required:true
+							}
+						}">收款方式</th>
+				<th data-options="field:'term_receivables',width:100,
+						formatter:function(value,row){
+							return row.receivablesname;
+						},
+						editor:{
+							type:'combobox',
+							options:{
+								valueField:'receivablesid',
+								textField:'receivablesname',
+								method:'get',
+								url:'../database/receivables.json',
+								required:true
+							}
+						}">收款期限</th>
+				<th data-options="field:'percentage_deduction',width:100,
+						formatter:function(value,row){
+							return row.deductionname;
+						},
+						editor:{
+							type:'combobox',
+							options:{
+								valueField:'deductionid',
+								textField:'deductionname',
+								method:'get',
+								url:'../database/deduction.json',
+								required:true
+							}
+						}">扣%</th>
+				<th data-options="field:'payee_account',width:120,editor:'textbox'">收款人戶名</th>
+				<th data-options="field:'beneficiary_bank',width:120,editor:'textbox'">收款銀行</th>
+				<th data-options="field:'branch_categories',width:120,editor:'textbox'">分行別</th>
+				<th data-options="field:'beneficiary_account',width:120,editor:'textbox'">收款人帳號</th>
+				<th data-options="field:'fee_burden',width:120,editor:'textbox'">手續費負擔</th>
+				<th data-options="field:'payee_uninumbers',width:120,editor:'textbox'">收款人統編</th>
+				<th data-options="field:'accounts_notification',width:100,
+						formatter:function(value,row){
+							return row.notificationname;
+						},
+						editor:{
+							type:'combobox',
+							options:{
+								valueField:'notificationid',
+								textField:'notificationname',
+								method:'get',
+								url:'../database/notification.json',
+								required:true
+							}
+						}">帳款通知方式</th>
+				<th data-options="field:'e_mail',width:120,editor:'textbox'">電子郵件</th>
+				<th data-options="field:'fax_number',width:120,editor:'textbox'">傳真號碼</th>
+				<th data-options="field:'phone_number',width:120,editor:'textbox'">電話號碼</th>
+				<th data-options="field:'phone_orders',width:120,editor:'textbox'">訂貨電話</th>
+			</tr>
+		</thead>
+	</table>
+
+	<div id="tb" style="height:auto">
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="append()">新增</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeit()">刪除</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="accept()">儲存</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="reject()">取消</a>
+	</div>
+	
+	<script type="text/javascript">
+		var editIndex = undefined;
+		function endEditing(){
+			if (editIndex == undefined){return true}
+			if ($('#dg').datagrid('validateRow', editIndex)){
+				var ed = $('#dg').datagrid('getEditor', {index:editIndex,field:'id'});
+				var productname = $(ed.target).combobox('getText');
+				$('#dg').datagrid('getRows')[editIndex]['productname'] = productname;
+				$('#dg').datagrid('endEdit', editIndex);
+				editIndex = undefined;
+				return true;
+			} else {
+				return false;
+			}
+		}
+		function onClickRow(index){
+			if (editIndex != index){
+				if (endEditing()){
+					$('#dg').datagrid('selectRow', index)
+							.datagrid('beginEdit', index);
+					editIndex = index;
+				} else {
+					$('#dg').datagrid('selectRow', editIndex);
+				}
+			}
+		}
+		function append(){
+			if (endEditing()){
+				$('#dg').datagrid('appendRow',{status:'P'});
+				editIndex = $('#dg').datagrid('getRows').length-1;
+				$('#dg').datagrid('selectRow', editIndex)
+						.datagrid('beginEdit', editIndex);
+			}
+		}
+		function removeit(){
+			if (editIndex == undefined){return}
+			$('#dg').datagrid('cancelEdit', editIndex)
+					.datagrid('deleteRow', editIndex);
+			editIndex = undefined;
+		}
+		function accept(){
+			if (endEditing()){
+				$('#dg').datagrid('acceptChanges');
+			}
+		}
+		function reject(){
+			$('#dg').datagrid('rejectChanges');
+			editIndex = undefined;
+		}
+	</script>
+
+
+
+<!--
+	<table id="dg" title="藥品代理商" style="width:800px;height:600px"
+			toolbar="#toolbar" pagination="true" idField="id"
+			rownumbers="true" fitColumns="true" singleSelect="true">
+		<thead>
+			<tr>
+				<th field="agents" width="50" editor="{type:'validatebox',options:{required:true}}">First Name</th>
+				<th field="uniform_numbers" width="50" editor="{type:'validatebox',options:{required:true}}">Last Name</th>
+				<th field="payment_method" width="50" editor="text">Phone</th>
+				<th field="term_receivables" width="50" editor="{type:'validatebox',options:{validType:'email'}}">Email</th>
+				<th field="percentage_deduction" width="50" editor="text">Phone</th>
+				<th field="payee_account" width="50" editor="text">Phone</th>
+				<th field="beneficiary_bank" width="50" editor="text">Phone</th>
+				<th field="branch_categories" width="50" editor="text">Phone</th>
+				<th field="beneficiary_account" width="50" editor="text">Phone</th>
+				<th field="fee_burden" width="50" editor="text">Phone</th>
+				<th field="payee_uninumbers" width="50" editor="text">Phone</th>
+				<th field="accounts_notification" width="50" editor="text">Phone</th>
+				<th field="e_mail" width="50" editor="text">Phone</th>
+				<th field="fax_number" width="50" editor="text">Phone</th>
+				<th field="phone_number" width="50" editor="text">Phone</th>
+				<th field="phone_orders" width="50" editor="text">Phone</th>
+			</tr>
+		</thead>
+	</table>
+-->

@@ -1,0 +1,241 @@
+	<h4>零售資料管理</h4>
+	<p>請直接操作: Datagrid資料列.</p>
+	
+	<table id="dr_dg" class="easyui-datagrid" title="OTC零售資料" style="width:1200px;height:400px"
+			url="../controllers/get_retail1.php"
+			toolbar="#dr_toolbar" pagination="true" fitColumns="false"
+			rownumbers="true" singleSelect="true">
+		<thead>
+			<tr>
+				<th data-options="field:'barcode'">條碼</th>
+				<th data-options="field:'product_code'">商品代碼</th>
+				<th data-options="field:'product_english'">英文名稱</th>
+				<th data-options="field:'product_chinese'">中文名稱</th>
+				<th data-options="field:'specification'">規格</th>
+				<th data-options="field:'spec_amount'">規格量</th>
+				<th data-options="field:'spec_unit'">規格單位</th>
+				<th data-options="field:'product_price'">價格</th>
+				<th data-options="field:'product_manufacturer'">廠商</th>
+				<th data-options="field:'remark'">備註</th>
+				<th data-options="field:'agents'">代理商</th>
+				<th data-options="field:'uniform_numbers'">統編</th>
+				<th data-options="field:'phone_orders'">訂貨電話</th>
+				<th data-options="field:'business_representatives'">業務代表</th>
+				<th data-options="field:'mobile_telephone'">行動電話</th>
+				<th data-options="field:'purchase_price'">進價</th>
+				<th data-options="field:'percentage_deduction'">扣%</th>
+				<th data-options="field:'orderunit_rebates'">訂貨單位與折扣方式</th>
+				<th data-options="field:'temporary_purchase'">臨採方式</th>
+				<th data-options="field:'safety_stock'">安全庫存量</th>
+				<th data-options="field:'selling_price'">售價</th>
+				<th data-options="field:'staff_price'">員工價</th>
+				<th data-options="field:'industry_price'">同業價格</th>
+			</tr>
+		</thead>
+	</table>
+
+	<div id="dr_toolbar">
+		<select id="drsearch_field">
+			<option value="barcode">條碼</option>
+			<option value="product_code">商品代碼</option>
+			<option value="product_english">英文名稱</option>
+		</select>
+		<input id="drsearch_what" style="line-height:15px;border:1px solid #ccc" />
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="drdoSearch()">搜尋</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="drnewUser()" style="color:blue;">新增</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="dreditUser()" style="color:blue;">修改</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="drdestroyUser()" style="color:blue;">刪除</a>
+	</div>
+	
+	<div id="dr_dlg" class="easyui-dialog" style="width:350px;height:655px;padding:5px 5px"
+			closed="true" buttons="#dr_dlg-buttons">
+		<div class="ftitle">零售資料</div>
+		<form id="dr_fm" method="post" novalidate>
+			<div class="fitem">
+				<label>條碼:</label>
+				<input name="barcode" class="easyui-numberbox" required="true">
+			</div>
+			<div class="fitem">
+				<label>商品代碼:</label>
+				<input name="product_code" class="easyui-numberbox" required="true">
+			</div>
+			<div class="fitem">
+				<label>英文名稱:</label>
+				<input name="product_english" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>中文名稱:</label>
+				<input name="product_chinese" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>規格:</label>
+				<input name="specification" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>規格量:</label>
+				<input name="spec_amount" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>規格單位:</label>
+				<input name="spec_unit" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>價格:</label>
+				<input name="product_price" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>廠商:</label>
+				<input name="product_manufacturer" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>備註:</label>
+				<input name="remark" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>代理商:</label>
+				<input name="agents" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>統編:</label>
+				<input name="uniform_numbers" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>訂貨電話:</label>
+				<input name="phone_orders" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>業務代表:</label>
+				<input name="business_representatives" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>行動電話:</label>
+				<input name="mobile_telephone" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>進價:</label>
+				<input name="purchase_price" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>扣%:</label>
+				<input name="percentage_deduction" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>訂貨單位與折扣方式:</label>
+				<input name="orderunit_rebates" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>臨採:</label>
+				<input name="temporary_purchase" class="easyui-combobox"
+				        data-options="
+				            url:'../database/purchase.json',
+				            valueField:'purchaseid',
+				            textField:'purchasename',
+				            panelHeight:'auto'
+							">
+			</div>
+			<div class="fitem">
+				<label>安全庫存量:</label>
+				<input name="safety_stock" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>售價:</label>
+				<input name="selling_price" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>員工價:</label>
+				<input name="staff_price" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>同業價格:</label>
+				<input name="industry_price" class="easyui-textbox">
+			</div>
+		</form>
+	</div>
+	<div id="dr_dlg-buttons">
+		<a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="drsaveUser()" style="width:90px">存檔</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dr_dlg').dialog('close')" style="width:90px">取消</a>
+	</div>
+	<script type="text/javascript">
+		var drurl;
+		function drdoSearch(){
+			$('#dr_dg').datagrid('load',{
+				drsearch_field: $('#drsearch_field').val(),
+				drsearch_what: $('#drsearch_what').val()
+			});
+		}
+		function drnewUser(){
+			$('#dr_dlg').dialog('open').dialog('setTitle','新增零售資料');
+			$('#dr_fm').form('clear');
+			drurl = '../controllers/save_retail.php';
+		}
+		function dreditUser(){
+			var row = $('#dr_dg').datagrid('getSelected');
+			if (row){
+				$('#dr_dlg').dialog('open').dialog('setTitle','修改零售資料');
+				$('#dr_fm').form('load',row);
+				drurl = '../controllers/update_retail.php?id='+row.id;
+			}
+		}
+		function drsaveUser(){
+			$('#dr_fm').form('submit',{
+				url: drurl,
+				onSubmit: function(){
+					return $(this).form('validate');
+				},
+				success: function(result){
+					var result = eval('('+result+')');
+					if (result.errorMsg){
+						$.messager.show({
+							title: '錯誤',
+							msg: result.errorMsg
+						});
+					} else {
+						$('#dr_dlg').dialog('close');		// close the dialog
+						$('#dr_dg').datagrid('reload');	// reload the user data
+					}
+				}
+			});
+		}
+		function drdestroyUser(){
+			var row = $('#dr_dg').datagrid('getSelected');
+			if (row){
+				$.messager.confirm('Confirm','您確認要刪除這項零售資料嗎?',function(r){
+					if (r){
+						$.post('../controllers/destroy_retail.php',{id:row.id},function(result){
+							if (result.success){
+								$('#dr_dg').datagrid('reload');	// reload the user data
+							} else {
+								$.messager.show({	// show error message
+									title: 'Error',
+									msg: result.errorMsg
+								});
+							}
+						},'json');
+					}
+				});
+			}
+		}
+	</script>
+	<style type="text/css">
+		#dr_fm{
+			margin:0;
+			padding:5px 5px;
+		}
+		.ftitle{
+			font-size:14px;
+			font-weight:bold;
+			padding:5px 0;
+			margin-bottom:1px;
+			border-bottom:1px solid #ccc;
+		}
+		.fitem{
+			margin-bottom:1px;
+		}
+		.fitem label{
+			display:inline-block;
+			width:120px;
+		}
+		.fitem input{
+			width:160px;
+		}
+	</style>

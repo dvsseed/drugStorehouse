@@ -1,0 +1,195 @@
+  <h4>健保藥品資訊</h4>
+  <p>請直接操作: Datagrid資料列.</p>
+
+  <div id="hcd_toolbar" style="padding:3px">
+    <select id="search_field">
+      <option value="drug_code">藥品代碼</option>
+      <option value="drug_english">藥品英文名稱</option>
+    </select>
+    <input id="search_what" style="line-height:15px;border:1px solid #ccc">
+    <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="hcddoSearch()">搜尋</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="hcddoAdd()">新增</a>
+    <!--
+    <a href="#" class="easyui-linkbutton" iconCls="icon-edit" onclick="hcddoEdit()">編輯</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-remove" onclick="hcddoRemove()">刪除</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-save" onclick="hcddoSave()">儲存</a>
+    -->
+  </div>
+
+  <div id="hcd_dlg" class="easyui-dialog" style="width:380px;height:540px;padding:5px 5px"
+      closed="true" buttons="#hcd_dlg-buttons">
+    <div class="ftitle">藥品資料</div>
+    <form id="hcd_fm" method="post" novalidate>
+      <div class="fitem">
+        <label>New Mark:</label>
+        <input name="new_mark" class="easyui-textbox">
+      </div>
+      <div class="fitem">
+        <label>口服錠註記:</label>
+        <input name="oral_tablet" class="easyui-textbox">
+      </div>
+      <div class="fitem">
+        <label>單/複方註記:</label>
+        <input name="single_compound" class="easyui-textbox">
+      </div>
+      <div class="fitem">
+        <label>藥品代碼:</label>
+        <input name="drug_code" class="easyui-textbox">
+      </div>
+      <div class="fitem">
+        <label><font color="red">庫存碼:</font></label>
+        <input name="stock_code" type="text" class="easyui-textbox" readonly="readonly">
+      </div>
+      <div class="fitem">
+        <label>藥價參考金額:</label>
+        <input name="drugprices_reference" type="text" class="easyui-textbox">
+      </div>
+      <div class="fitem">
+        <label>藥價參考日期:</label>
+        <input name="drugprices_startdate" type="text" class="easyui-textbox">
+      </div>
+      <div class="fitem">
+        <label>藥價參考截止日期:</label>
+        <input name="drugprices_expirationdate" type="text" class="easyui-textbox">
+      </div>
+      <div class="fitem">
+        <label>藥品英文名稱:</label>
+        <input name="drug_english" type="text" class="easyui-textbox">
+      </div>
+      <div class="fitem">
+        <label>藥品規格量:</label>
+        <input name="drugspec_amount" type="text" class="easyui-textbox">
+      </div>
+      <div class="fitem">
+        <label>藥品規格單位:</label>
+        <input name="drugspec_unit" class="easyui-textbox">
+      </div>
+      <div class="fitem">
+        <label>成份:</label>
+        <input name="drug_element" class="easyui-textbox">
+      </div>
+      <div class="fitem">
+        <label>成份含量:</label>
+        <input name="drug_ingredient" class="easyui-textbox">
+      </div>
+      <div class="fitem">
+        <label>含量單位:</label>
+        <input name="content_unit" class="easyui-textbox">
+      </div>
+      <div class="fitem">
+        <label>藥品劑型:</label>
+        <input name="drug_form" class="easyui-textbox">
+      </div>
+      <div class="fitem">
+        <label>藥理分類代碼:</label>
+        <input name="drug_classification" class="easyui-textbox">
+      </div>
+      <div class="fitem">
+        <label>製造廠名稱:</label>
+        <input name="drug_manufacturer" class="easyui-textbox">
+      </div>
+      <div class="fitem">
+        <label>ATC CODE:</label>
+        <input name="atc_code" class="easyui-textbox">
+      </div>
+    </form>
+  </div>
+  <div id="hcd_dlg-buttons">
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="hcdsaveRecord()" style="width:90px">存檔</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#hcd_dlg').dialog('close')" style="width:90px">取消</a>
+  </div>
+  <script type="text/javascript">
+    var hcdurl;
+    function hcddoSearch(){
+      $('#hcd_dg').datagrid('load',{
+        search_field: $('#search_field').val(),
+        search_what: $('#search_what').val()
+        });
+      }
+    function hcddoAdd(){
+      // $.messager.alert('訊息','新增!');
+      $('#hcd_dlg').dialog('open').dialog('setTitle','新增藥品');
+      $('#hcd_fm').form('clear');
+      hcdurl = '../controllers/save_inventory.php';
+    }
+    function hcdsaveRecord(){
+      $('#hcd_fm').form('submit',{
+        url: hcdurl,
+        onSubmit: function(){
+          return $(this).form('validate');
+        },
+        success: function(result){
+          var result = eval('('+result+')');
+          if (result.errorMsg){
+            $.messager.show({
+              title: '錯誤',
+              msg: result.errorMsg
+            });
+          } else {
+            $('#hcd_dlg').dialog('close');   // close the dialog
+            $('#hcd_dg').datagrid('reload'); // reload the user data
+          }
+        }
+      });
+    }
+    // function hcddoEdit(){$.messager.alert('訊息','編輯!');}
+    // function hcddoRemove(){$.messager.alert('訊息','刪除!');}
+    // function hcddoSave(){$.messager.alert('訊息','儲存!');}
+  </script>
+  <table id="hcd_dg" title="健保用藥品項" style="width:1200px;height:400px" toolbar="#hcd_toolbar"></table>
+  <script language="javascript">
+    $(document).ready(function(){
+      $('#hcd_dg').datagrid({
+        url:'../controllers/get_drugs.php',
+        columns:[[
+          {field:'new_mark',title:'New Mark',width:60},
+          {field:'oral_tablet',title:'口服錠註記',width:70,align:'center'},
+          {field:'single_compound',title:'單/複方註記',width:80,align:'center'},
+          {field:'drug_code',title:'藥品代碼',width:90,align:'center',sortable:true},
+          {field:'stock_code',title:'庫存碼',width:160,align:'center',sortable:true},
+          {field:'drugprices_reference',title:'藥價參考金額',width:80,align:'right',sortable:true},
+          {field:'drugprices_startdate',title:'藥價參考日期',width:80,align:'right',sortable:true},
+          {field:'drugprices_expirationdate',title:'藥價參考截止日期',width:100,align:'right',sortable:true},
+          {field:'drug_english',title:'藥品英文名稱',width:200,align:'left',sortable:true},
+          {field:'drugspec_amount',title:'藥品規格量',width:80,align:'right',sortable:true},
+          {field:'drugspec_unit',title:'藥品規格單位',width:80,align:'center',sortable:true},
+          {field:'drug_element',title:'成份',width:200,align:'left',sortable:true},
+          {field:'drug_ingredient',title:'成份含量',width:120,align:'right',sortable:true},
+          {field:'content_unit',title:'含量單位',width:60,align:'right',sortable:true},
+          {field:'drug_form',title:'藥品劑型',width:60,align:'center',sortable:true},
+          {field:'drug_classification',title:'藥理分類代碼',width:80,align:'right',sortable:true},
+          {field:'drug_manufacturer',title:'製造廠名稱',width:200,align:'left',sortable:true},
+          {field:'atc_code',title:'ATC CODE',width:80,align:'center',sortable:true}
+          ]],
+        singleSelect:true,
+        collapsible:true,
+        pagination:true,
+        fitColumns:false,
+        pageSize:10,
+        rownumbers:true
+      });
+    });
+  </script>
+  <style type="text/css">
+    #hcd_fm{
+      margin:0;
+      padding:5px 5px;
+    }
+    .ftitle{
+      font-size:14px;
+      font-weight:bold;
+      padding:5px 0;
+      margin-bottom:1px;
+      border-bottom:1px solid #ccc;
+    }
+    .fitem{
+      margin-bottom:1px;
+    }
+    .fitem label{
+      display:inline-block;
+      width:130px;
+    }
+    .fitem input{
+      width:160px;
+    }
+  </style>

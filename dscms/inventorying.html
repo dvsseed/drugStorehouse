@@ -1,0 +1,274 @@
+	<h4>庫存管理維護</h4>
+	<p>請直接操作: Datagrid資料列.</p>
+	
+	<table id="iv_dg" class="easyui-datagrid" title="庫存資料" style="width:1200px;height:400px"
+			url="../controllers/get_inventory.php"
+			toolbar="#iv_toolbar" pagination="true" fitColumns="false"
+			rownumbers="true" singleSelect="true">
+		<thead>
+			<tr>
+				<th data-options="field:'inventory_date',width:120">日期</th>
+				<th data-options="field:'barcode',width:80,align:'right'">條碼</th>
+				<th data-options="field:'drug_code',width:100">藥品代碼</th>
+				<th data-options="field:'stock_code',width:100">庫存碼</th>
+				<th data-options="field:'drug_english',width:100">藥品名稱(英文)</th>
+				<th data-options="field:'drug_chinese',width:120">藥品名稱(中文)</th>
+				<th data-options="field:'drugspec_amount',width:120">規格量</th>
+				<th data-options="field:'box_qty',width:120">盒</th>
+				<th data-options="field:'tablet_qty',width:120">顆</th>
+				<th data-options="field:'total',width:120">總量</th>
+				<th data-options="field:'tr_qty',width:120">POS耗用</th>
+				<th data-options="field:'safety_stock',width:100">安全庫存量</th>
+			</tr>
+		</thead>
+	</table>
+
+	<div id="iv_toolbar">
+		<select id="ivsearch_field">
+			<option value="barcode">條碼</option>
+			<option value="drug_code">藥品代碼</option>
+			<option value="stock_code">庫存碼</option>
+			<option value="drug_english">藥品名稱(英文)</option>
+		</select>
+		<input id="ivsearch_what" style="line-height:15px;border:1px solid #ccc" />
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="ivdoSearch()">搜尋</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="ivnewRecord()" style="color:blue;">新增</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="iveditRecord()" style="color:blue;">修改</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="ivdestroyRecord()" style="color:blue;">刪除</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="ivrefreshRecord(1)" style="color:red;">更新總量</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="ivrefreshRecord(2)" style="color:red;">更新POS耗用</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="ivrefreshRecord(3)" style="color:red;">更新安全庫存量</a>
+	</div>
+	
+	<div id="iv_dlg" class="easyui-dialog" style="width:1110px;height:410px;padding:5px 5px"
+			closed="true" buttons="#iv_dlg-buttons">
+		<div class="easyui-layout" style="width:1100px;height:400px;">
+
+		<div data-options="region:'north',split:true,title:'藥品資料查詢',iconCls:'icon-ok'" style="width:1300px;height:210px">
+			<div id="ivdd_toolbar" style="padding:3px">
+			  <select id="ivddsearch_field">
+			    <option value="drug_code">藥品代碼</option>
+			    <option value="stock_code">庫存碼</option>
+			    <option value="drug_english">藥品英文名稱</option>
+			  </select>
+			  <input id="ivddsearch_what" style="line-height:15px;border:1px solid #ccc" />
+			  <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="ivdddoSearch()">搜尋藥品</a>
+			  <a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="ivdddoAdd()">新增至庫存資料</a>
+			</div>
+			<script type="text/javascript">
+			  function ivdddoSearch(){
+			    $('#ivdd_dg').datagrid('load',{
+			      ivddsearch_field: $('#ivddsearch_field').val(),
+			      ivddsearch_what: $('#ivddsearch_what').val()
+			      });
+			    }
+			  function ivdddoAdd(){
+				var row = $('#ivdd_dg').datagrid('getSelected');
+				if (row){
+					//assign value to iv_fm
+					$("#iv_drug_code").textbox('setValue',row.drug_code);
+					$("#iv_stock_code").textbox('setValue',row.stock_code);
+					$("#iv_drug_english").textbox('setValue',row.drug_english);
+					$("#iv_drug_chinese").textbox('setValue',row.drug_chinese);
+					$("#iv_drug_chinese").textbox('setValue',row.drug_chinese);
+					$("#iv_drugspec_amount").textbox('setValue',row.drugspec_amount);
+				}
+			  }
+			</script>
+			<table id="ivdd_dg" style="width:1100px;height:180px" toolbar="#ivdd_toolbar"></table>
+			<script language="javascript">
+			  $(document).ready(function(){
+			    $('#ivdd_dg').datagrid({
+			      url:'../controllers/get_drug1.php',
+			      columns:[[
+			        {field:'drug_code',title:'藥品代碼',width:80,align:'center'},
+			        {field:'stock_code',title:'庫存碼',width:160,align:'center'},
+			        {field:'drug_english',title:'藥品名稱(英文)',width:100,align:'center'},
+			        {field:'drug_chinese',title:'藥品名稱(中文)',width:100,align:'right'},
+			        {field:'drugspec_amount',title:'規格量',width:60,align:'right'},
+			        {field:'drugspec_unit',title:'規格單位',width:60,align:'right'},
+			        {field:'drugprices_reference',title:'價格',width:60,align:'right'},
+			        {field:'drug_manufacturer',title:'藥商',width:150,align:'right'},
+			        {field:'agents',title:'代理商',width:150,align:'center'},
+			        ]],
+			      singleSelect:true,
+			      collapsible:true,
+			      fitColumns:false,
+			      pagination:true,
+			      pageSize:5,
+			      pageList: [5,10,20,50,100],
+			      rownumbers:true
+			    });
+			  });
+			</script>
+		</div>
+
+		<div data-options="region:'south',split:true,title:'庫存資料',iconCls:'icon-ok'" style="height:190px">
+			<form id="iv_fm" method="post" novalidate>
+				<table cellpadding="0" cellspacing="0" width="100%" align="center" border="0">
+					<tr>
+						<td><div class="fitem">
+							<label>日期:</label>
+							<input name="inventory_date" class="easyui-datebox" data-options="formatter:dmdateformatter,parser:dmdateparser">
+						</div></td>
+						<td><div class="fitem">
+							<label>條碼:</label>
+							<input name="barcode" class="easyui-numberbox">
+						</div></td>
+						<td><div class="fitem">
+							<label>藥品代碼:</label>
+							<input name="drug_code" id="iv_drug_code" class="easyui-textbox" />
+						</div></td>
+						<td><div class="fitem">
+							<label>庫存碼:</label>
+							<input name="stock_code" id="iv_stock_code" class="easyui-textbox">
+						</div></td>
+					</tr>
+					<tr>
+						<td><div class="fitem">
+							<label>藥品名稱(英文):</label>
+							<input name="drug_english" id="iv_drug_english" class="easyui-textbox" />
+						</div></td>
+						<td><div class="fitem">
+							<label>藥品名稱(中文):</label>
+							<input name="drug_chinese" id="iv_drug_chinese" class="easyui-textbox" />
+						</div></td>
+						<td><div class="fitem">
+							<label>規格量:</label>
+							<input name="drugspec_amount" id="iv_drugspec_amount" class="easyui-textbox" />
+						</div></td>
+						<td><div class="fitem">
+							<label>盒:</label>
+							<input name="box_qty" type="text" class="easyui-textbox">
+						</div></td>
+					</tr>
+					<tr>
+						<td><div class="fitem">
+							<label>顆:</label>
+							<input name="tablet_qty" type="text" class="easyui-textbox">
+						</div></td>
+						<td><div class="fitem">
+							<label><font color="red">總量:</font></label>
+							<input name="total" type="text" class="easyui-textbox" readonly="readonly">
+						</div></td>
+						<td><div class="fitem">
+							<label><font color="red">POS耗用:</font></label>
+							<input name="tr_qty" type="text" class="easyui-textbox" readonly="readonly">
+						</div></td>
+						<td><div class="fitem">
+							<label><font color="red">安全庫存量:</font></label>
+							<input name="safety_stock" class="easyui-textbox" readonly="readonly">
+						</div></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		</div>
+	</div>
+	<div id="iv_dlg-buttons">
+		<a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="ivsaveRecord()" style="width:90px">存檔</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#iv_dlg').dialog('close')" style="width:90px">取消</a>
+	</div>
+	<script type="text/javascript">
+		var ivurl;
+		function ivdoSearch(){
+			$('#iv_dg').datagrid('load',{
+				ivsearch_field: $('#ivsearch_field').val(),
+				ivsearch_what: $('#ivsearch_what').val()
+			});
+		}
+		function ivnewRecord(){
+			$('#iv_dlg').dialog('open').dialog('setTitle','新增庫存');
+			$('#iv_fm').form('clear');
+			ivurl = '../controllers/save_inventory.php';
+		}
+		function iveditRecord(){
+			var row = $('#iv_dg').datagrid('getSelected');
+			if (row){
+				$('#iv_dlg').dialog('open').dialog('setTitle','修改庫存');
+				$('#iv_fm').form('load',row);
+				ivurl = '../controllers/update_inventory.php?id='+row.id;
+			}
+		}
+		function ivsaveRecord(){
+			$('#iv_fm').form('submit',{
+				url: ivurl,
+				onSubmit: function(){
+					return $(this).form('validate');
+				},
+				success: function(result){
+					var result = eval('('+result+')');
+					if (result.errorMsg){
+						$.messager.show({
+							title: '錯誤',
+							msg: result.errorMsg
+						});
+					} else {
+						$('#iv_dlg').dialog('close');		// close the dialog
+						$('#iv_dg').datagrid('reload');	// reload the user data
+					}
+				}
+			});
+		}
+		function ivdestroyRecord(){
+			var row = $('#iv_dg').datagrid('getSelected');
+			if (row){
+				$.messager.confirm('Confirm','您確認要刪除這筆庫存嗎?',function(r){
+					if (r){
+						$.post('../controllers/destroy_inventory.php',{id:row.id},function(result){
+							if (result.success){
+								$('#iv_dg').datagrid('reload');	// reload the user data
+							} else {
+								$.messager.show({	// show error message
+									title: 'Error',
+									msg: result.errorMsg
+								});
+							}
+						},'json');
+					}
+				});
+			}
+		}
+		function ivrefreshRecord($var){
+			var row = $('#iv_dg').datagrid('getSelected');
+			if (row){
+				$.messager.confirm('Confirm','您確認要更新庫存嗎?',function(r){
+					if (r){
+						$.post('../controllers/refresh_inventory.php',{id:$var},function(result){
+							if (result.success){
+								$('#iv_dg').datagrid('reload');
+							} else {
+								$.messager.show({
+									title: 'Error',
+									msg: result.errorMsg
+								});
+							}
+						},'json');
+					}
+				});
+			}
+		}
+	</script>
+	<style type="text/css">
+		#iv_fm{
+			margin:0;
+			padding:5px 5px;
+		}
+		.ftitle{
+			font-size:14px;
+			font-weight:bold;
+			padding:5px 0;
+			margin-bottom:1px;
+			border-bottom:1px solid #ccc;
+		}
+		.fitem{
+			margin-bottom:1px;
+		}
+		.fitem label{
+			display:inline-block;
+			width:90px;
+		}
+		.fitem input{
+			width:160px;
+		}
+	</style>

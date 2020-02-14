@@ -1,0 +1,66 @@
+  <h4>藥品銷售資訊</h4>
+  <p>請直接操作: Datagrid資料列.</p>
+
+  <div id="ps_toolbar" style="padding:3px">
+    <select id="search_field">
+      <option value="sale_id">銷貨單號</option>
+      <option value="item_id">商品代號</option>
+    </select>
+    <input id="search_what" style="line-height:15px;border:1px solid #ccc">
+    <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="psdoSearch()">搜尋</a>
+  </div>
+  <script type="text/javascript">
+    function psdoSearch(){
+      $('#ps_dg').datagrid('load',{
+        pssearch_field: $('#search_field').val(),
+        pssearch_what: $('#search_what').val()
+        });
+      }
+  </script>
+  <table id="ps_dg" title="銷售資訊" style="width:1200px;height:400px" toolbar="#ps_toolbar"></table>
+  <script language="javascript">
+    $(document).ready(function(){
+      $('#ps_dg').datagrid({
+        url:'../controllers/get_selling.php',
+        columns:[[
+          {field:'sale_id',title:'銷貨單號',width:120,align:'center'},
+          {field:'seqno',title:'序號',width:60,align:'center'},
+          {field:'item_id',title:'商品代號',width:120,align:'right',sortable:true},
+          {field:'tr_date',title:'交易日期',width:80,align:'center'},
+          {field:'un_price',title:'單價',width:80,align:'right'},
+          {field:'tr_qty',title:'交易量',width:80,align:'right'},
+          {field:'mea',title:'異動單位',width:80,align:'right'},
+          {field:'dis_per',title:'折扣%',width:80,align:'right'},
+          {field:'dis_mon',title:'折扣金',width:80,align:'right'},
+          {field:'un_cost',title:'單位成本',width:80,align:'right'},
+          {field:'get_point',title:'點數',width:80,align:'right'},
+          {field:'bonus',title:'獎金',width:80,align:'right'},
+          {field:'sub_pmon',title:'應扣獎金',width:60,align:'right'},
+          {field:'stock_old',title:'商品原庫存量',width:80,align:'right'},
+          {field:'cost_old',title:'商品原成本',width:80,align:'right'},
+          {field:'updid',title:'異動人員',width:80,align:'center'},
+          {field:'updtime',title:'異動日期',width:80,align:'center'},
+          {field:'ubc1',title:'發票開立否',width:80,align:'center'},
+          {field:'ubc2',title:'ubc2',width:80,align:'center'},
+          {field:'ubn1',title:'ubn1',width:80,align:'right'},
+          {field:'ubn2',title:'ubn2',width:80,align:'right'},
+          {field:'ubd1',title:'ubd1',width:80,align:'center'},
+          {field:'ubd2',title:'ubd2',width:80,align:'center'},
+          {field:'cmp_code',title:'公司別',width:80,align:'center'},
+          {field:'inv_id',title:'發票號碼',width:80,align:'center'},
+          {field:'new_uprice',title:'折數後單價',width:80,align:'right'},
+          {field:'sp_no',title:'特惠案號',width:80,align:'center'},
+          {field:'sp_seqno',title:'組合項次',width:80,align:'center'},
+          {field:'csq_id',title:'特惠價案號',width:80,align:'center'},
+          {field:'up_dis',title:'單價區分',width:80,align:'center'},
+          {field:'eos_cost',title:'物流成本',width:80,align:'right'}
+          ]],
+        singleSelect:true,
+        collapsible:true,
+        pagination:true,
+        fitColumns:false,
+        pageSize:10,
+        rownumbers:true
+      });
+    });
+  </script>

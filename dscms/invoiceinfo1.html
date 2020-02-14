@@ -1,0 +1,488 @@
+	<h4>發票資料維護</h4>
+	<p>請直接操作: Datagrid資料列.</p>
+
+	<table id="ii_dg" class="easyui-datagrid" title="發票資料" style="width:1200px;height:400px"
+			url="../controllers/get_invoice1.php"
+			toolbar="#ii_toolbar" pagination="true" fitColumns="false" pageSize="10" pageList="[10,20,30,40,50]"
+			rownumbers="true" singleSelect="true">
+		<thead>
+			<tr>
+<!--
+				<th data-options="field:'purchase_date',width:100">進貨日期</th>
+				<th data-options="field:'invoice_date',width:100">發票日期</th>
+				<th data-options="field:'drug_code',width:90,align:'left'">藥品代碼</th>
+				<th data-options="field:'stock_code',width:150,align:'left'">庫存碼</th>
+				<th data-options="field:'drug_english',width:100">藥品名稱(英文)</th>
+				<th data-options="field:'drug_chinese',width:100">藥品名稱(中文)</th>
+				<th data-options="field:'drugspec_amount',width:120">規格量</th>
+				<th data-options="field:'drugspec_unit',width:120">規格單位</th>
+				<th data-options="field:'drugprices_reference',width:120">價格</th>
+				<th data-options="field:'drug_manufacturer',width:120">藥商</th>
+				<th data-options="field:'agents',width:120">代理商</th>
+				<th data-options="field:'quantity',width:100">數量</th>
+				<th data-options="field:'grant_amount',width:120">贈量</th>
+				<th data-options="field:'total',width:120">總量</th>
+				<th data-options="field:'purchase',width:120">進貨</th>
+				<th data-options="field:'invoice_number',width:120">發票號碼</th>
+				<th data-options="field:'invoice_amount',width:120">發票金額</th>
+				<th data-options="field:'discount_amount',width:120">折讓金額</th>
+				<th data-options="field:'business_tax',width:120">營業稅</th>
+				<th data-options="field:'discount_afteramount',width:120">折讓後金額</th>
+				<th data-options="field:'unit_price',width:120">單價</th>
+				<th data-options="field:'price_difference',width:120">價差</th>
+				<th data-options="field:'purchase_price',width:120">進價</th>
+				<th data-options="field:'percentage_deduction',width:120">扣%</th>
+				<th data-options="field:'expiration_date',width:120">有效期限</th>
+				<th data-options="field:'lot_number',width:120">批號</th>
+				<th data-options="field:'payment_date',width:120">付款日期</th>
+				<th data-options="field:'paid_afterdeduction',width:120">實收(扣%後)</th>
+				<th data-options="field:'before3months_consumption',width:120">前三個月耗用</th>
+				<th data-options="field:'business_representatives',width:120">業務代表</th>
+				<th data-options="field:'mobile_telephone',width:120">行動電話</th>
+				<th data-options="field:'phone_orders',width:120">訂貨電話</th>
+				<th data-options="field:'storage_location',width:200">入庫位置</th>
+				<th data-options="field:'return_1F',width:120">1F退回</th>
+-->
+				<th data-options="field:'purchase_date'">進貨日期</th>
+				<th data-options="field:'invoice_date'">發票日期</th>
+				<th data-options="field:'drug_code'">藥品代碼</th>
+				<th data-options="field:'stock_code'">庫存碼</th>
+				<th data-options="field:'drug_english'">藥品名稱(英文)</th>
+				<th data-options="field:'drug_chinese'">藥品名稱(中文)</th>
+				<th data-options="field:'drugspec_amount'">規格量</th>
+				<th data-options="field:'drugspec_unit'">規格單位</th>
+				<th data-options="field:'drugprices_reference'">價格</th>
+				<th data-options="field:'drug_manufacturer'">藥商</th>
+				<th data-options="field:'agents'">代理商</th>
+				<th data-options="field:'quantity'">數量</th>
+				<th data-options="field:'grant_amount'">贈量</th>
+				<th data-options="field:'total'">總量</th>
+				<th data-options="field:'purchase'">進貨</th>
+				<th data-options="field:'invoice_number'">發票號碼</th>
+				<th data-options="field:'invoice_amount'">發票金額</th>
+				<th data-options="field:'discount_amount'">折讓金額</th>
+				<th data-options="field:'business_tax'">營業稅</th>
+				<th data-options="field:'discount_afteramount'">折讓後金額</th>
+				<th data-options="field:'unit_price'">單價</th>
+				<th data-options="field:'price_difference'">價差</th>
+				<th data-options="field:'purchase_price'">進價</th>
+				<th data-options="field:'percentage_deduction'">扣%</th>
+				<th data-options="field:'expiration_date'">有效期限</th>
+				<th data-options="field:'lot_number'">批號</th>
+				<th data-options="field:'payment_date'">付款日期</th>
+				<th data-options="field:'paid_afterdeduction'">實收(扣%後)</th>
+				<th data-options="field:'before3months_consumption'">前三個月耗用</th>
+				<th data-options="field:'business_representatives'">業務代表</th>
+				<th data-options="field:'mobile_telephone'">行動電話</th>
+				<th data-options="field:'phone_orders'">訂貨電話</th>
+				<th data-options="field:'storage_location'">入庫位置</th>
+				<th data-options="field:'return_1F'">1F退回</th>
+			</tr>
+		</thead>
+	</table>
+
+	<div id="ii_toolbar">
+		<select id="iisearch_field">
+			<option value="purchase_date">進貨日期</option>
+			<option value="invoice_date">發票日期</option>
+			<option value="drug_code">藥品代碼</option>
+			<option value="stock_code">庫存碼</option>
+			<option value="drug_english">藥品英文名稱</option>
+			<option value="invoice_number">發票號碼</option>
+			<option value="expiration_date">有效期限</option>
+			<option value="payment_date">付款日期</option>
+		</select>
+		<input id="iisearch_what" style="line-height:15px;border:1px solid #ccc" />
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="iidoSearch()">搜尋</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="iinewUser()" style="color:blue;">新增</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="iieditUser()" style="color:blue;">修改</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="iidestroyUser()" style="color:blue;">刪除</a>
+		<!-- a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="iiExportUser()" style="color:red;">匯出Excel</a -->
+		<a href="exportxls.php?e=1" class="easyui-linkbutton" iconCls="icon-save" plain="true" style="color:red;">全部發票匯出Excel</a>
+	</div>
+
+	<div id="ii_dlg" class="easyui-dialog" style="width:1000px;height:540px;padding:1px 1px"
+			closed="true" buttons="#ii_dlg-buttons">
+		<div class="easyui-layout" style="width:1000px;height:530px;">
+
+		<div data-options="region:'north',split:true,title:'藥品資料查詢',iconCls:'icon-ok'" style="width:990px;height:200px">
+			<div id="iidd_toolbar" style="padding:3px">
+			  <select id="iiddsearch_field">
+			    <option value="drug_code">藥品代碼</option>
+			    <option value="stock_code">庫存碼</option>
+			    <option value="drug_english">藥品英文名稱</option>
+			  </select>
+			  <input id="iiddsearch_what" style="line-height:15px;border:1px solid #ccc" />
+			  <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="iidddoSearch()">搜尋藥品</a>
+			  <a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="iidddoAdd()">新增至發票資料</a>
+			</div>
+			<script type="text/javascript">
+			  function iidddoSearch(){
+			    $('#iidd_dg').datagrid('load',{
+			      iiddsearch_field: $('#iiddsearch_field').val(),
+			      iiddsearch_what: $('#iiddsearch_what').val()
+			      });
+			    }
+			  function iidddoAdd(){
+				var row = $('#iidd_dg').datagrid('getSelected');
+				if (row){
+					//assign value to ii_fm
+					$("#ii_drug_code").textbox('setValue',row.drug_code);
+					$("#ii_stock_code").textbox('setValue',row.stock_code);
+					$("#ii_drug_english").textbox('setValue',row.drug_english);
+					$("#ii_drug_chinese").textbox('setValue',row.drug_chinese);
+					$("#ii_drug_chinese").textbox('setValue',row.drug_chinese);
+					$("#ii_drugspec_amount").textbox('setValue',row.drugspec_amount);
+					$("#ii_drugspec_unit").textbox('setValue',row.drugspec_unit);
+					$("#ii_drugprices_reference").textbox('setValue',row.drugprices_reference);
+					$("#ii_agents").textbox('setValue',row.agents);
+					$("#ii_business_representatives").textbox('setValue',row.business_representatives);
+					$("#ii_mobile_telephone").textbox('setValue',row.mobile_telephone);
+					$("#ii_phone_orders").textbox('setValue',row.phone_orders);
+				}
+			  }
+			</script>
+			<table id="iidd_dg" style="width:990px;height:150px" toolbar="#iidd_toolbar"></table>
+			<script language="javascript">
+			  $(document).ready(function(){
+			    $('#iidd_dg').datagrid({
+			      url:'../controllers/get_drug1.php',
+			      columns:[[
+			        {field:'drug_code',title:'藥品代碼',width:90,align:'center'},
+			        {field:'stock_code',title:'庫存碼',width:160,align:'center'},
+			        {field:'drug_english',title:'藥品名稱(英文)',width:100,align:'center'},
+			        {field:'drug_chinese',title:'藥品名稱(中文)',width:100,align:'right'},
+			        {field:'drugspec_amount',title:'規格量',width:60,align:'right'},
+			        {field:'drugspec_unit',title:'規格單位',width:60,align:'right'},
+			        {field:'drugprices_reference',title:'價格',width:60,align:'right'},
+			        {field:'drug_manufacturer',title:'藥商',width:140,align:'right'},
+			        {field:'agents',title:'代理商',width:140,align:'center'},
+			        ]],
+			      singleSelect:true,
+			      collapsible:true,
+			      fitColumns:false,
+			      pagination:true,
+			      pageSize:10,
+			      pageList: [10,20,30,40,50],
+			      rownumbers:true
+			    });
+			  });
+			</script>
+		</div>
+
+		<div data-options="region:'south',split:true,title:'發票資料',iconCls:'icon-ok'" style="height:330px">
+			<form id="ii_fm" method="post" novalidate>
+				<table cellpadding="0" cellspacing="0" width="100%" align="center" border="0">
+					<tr>
+						<td><div class="fitem">
+							<label>進貨日期:</label>
+							<input name="purchase_date" id="purchase_date" class="easyui-datebox" data-options="formatter:dmdateformatter,parser:dmdateparser" />
+						</div></td>
+						<td><div class="fitem">
+							<label>發票日期:</label>
+							<input name="invoice_date" class="easyui-datebox" data-options="formatter:dmdateformatter,parser:dmdateparser" />
+						</div></td>
+						<td><div class="fitem">
+							<label>藥品代碼:</label>
+							<input name="drug_code" id="ii_drug_code" class="easyui-textbox" />
+						</div></td>
+						<td><div class="fitem">
+							<label>藥品名稱(英文):</label>
+							<input name="drug_english" id="ii_drug_english" class="easyui-textbox" />
+						</div></td>
+					</tr>
+					<tr>
+						<td><div class="fitem">
+							<label>藥品名稱(中文):</label>
+							<input name="drug_chinese" id="ii_drug_chinese" class="easyui-textbox" />
+						</div></td>
+						<td><div class="fitem">
+							<label>規格量:</label>
+							<input name="drugspec_amount" id="ii_drugspec_amount" class="easyui-textbox" />
+						</div></td>
+						<td><div class="fitem">
+							<label>規格單位:</label>
+							<input name="drugspec_unit" id="ii_drugspec_unit" class="easyui-textbox" />
+						</div></td>
+						<td><div class="fitem">
+							<label>價格:</label>
+							<input name="drugprices_reference" id="ii_drugprices_reference" class="easyui-textbox" />
+						</div></td>
+					</tr>
+					<tr>
+						<td><div class="fitem">
+							<label>藥商:</label>
+							<input name="drug_manufacturer" id="ii_drug_manufacturer" class="easyui-textbox" />
+						</div></td>
+						<td><div class="fitem">
+							<label>代理商:</label>
+							<input name="agents" id="ii_agents" class="easyui-textbox" />
+						</div></td>
+						<td><div class="fitem">
+							<label>數量:</label>
+							<input name="quantity" id="ii_quantity" class="easyui-textbox" data-options="buttonText:'計算',iconCls:'icon-add',onClickButton:function(){alert('總量=規格量x數量');calqty();}" />
+						</div></td>
+						<td><div class="fitem">
+							<label>贈量:</label>
+							<input name="grant_amount" class="easyui-textbox" />
+						</div></td>
+					</tr>
+					<tr>
+						<td><div class="fitem">
+							<label><font color="red">總量:</font></label>
+							<input name="total" id="ii_total" class="easyui-textbox" readonly="readonly" />
+						</div></td>
+						<td><div class="fitem">
+							<label>進貨:</label>
+							<input name="purchase" class="easyui-textbox" />
+						</div></td>
+						<td><div class="fitem">
+							<label>發票號碼:</label>
+							<input name="invoice_number" class="easyui-textbox" />
+						</div></td>
+						<td><div class="fitem">
+							<label>發票金額:</label>
+							<input name="invoice_amount" id="ii_invoice_amount" class="easyui-textbox" />
+						</div></td>
+					</tr>
+					<tr>
+						<td><div class="fitem">
+							<label>折讓金額:</label>
+							<input name="discount_amount" id="ii_discount_amount" class="easyui-textbox" />
+						</div></td>
+						<td><div class="fitem">
+							<label>營業稅:</label>
+							<input name="business_tax" id="ii_business_tax" class="easyui-textbox" data-options="buttonText:'計算',iconCls:'icon-add',onClickButton:function(){alert('折讓後金額=發票金額-折讓金額-營業稅');calamount();alert('單價=折讓後金額/總量');calprice();}" />
+						</div></td>
+						<td><div class="fitem">
+							<label><font color="red">折讓後金額:</font></label>
+							<input name="discount_afteramount" id="ii_discount_afteramount" class="easyui-textbox" readonly="readonly" />
+						</div></td>
+						<td><div class="fitem">
+							<label><font color="red">單價:</font></label>
+							<input name="unit_price" id="ii_unit_price" class="easyui-textbox" readonly="readonly" />
+						</div></td>
+					</tr>
+					<tr>
+						<td><div class="fitem">
+							<label><font color="red">價差:</font></label>
+							<input name="price_difference" id="ii_price_difference" class="easyui-textbox" readonly="readonly" />
+						</div></td>
+						<td><div class="fitem">
+							<label>進價:</label>
+							<input name="purchase_price" id="ii_purchase_price" class="easyui-textbox" data-options="buttonText:'計算',iconCls:'icon-add',onClickButton:function(){alert('價差=進價-單價');caldifference();}" />
+						</div></td>
+						<td><div class="fitem">
+							<label>扣%:</label>
+							<input name="percentage_deduction" id="ii_percentage_deduction" class="easyui-textbox" />
+						</div></td>
+						<td><div class="fitem">
+							<label>有效期限:</label>
+							<input name="expiration_date" class="easyui-datebox" data-options="formatter:dmdateformatter,parser:dmdateparser" />
+						</div></td>
+					</tr>
+					<tr>
+						<td><div class="fitem">
+							<label>批號:</label>
+							<input name="lot_number" class="easyui-textbox" />
+						</div></td>
+						<td><div class="fitem">
+							<label>付款日期:</label>
+							<input name="payment_date" class="easyui-datebox" data-options="formatter:dmdateformatter,parser:dmdateparser" />
+						</div></td>
+						<td><div class="fitem">
+							<label>實收(扣%後):</label>
+							<input name="paid_afterdeduction" class="easyui-textbox" />
+						</div></td>
+						<td><div class="fitem">
+							<label>前三個月耗用:</label>
+							<input name="before3months_consumption" class="easyui-textbox" />
+						</div></td>
+					</tr>
+					<tr>
+						<td><div class="fitem">
+							<label>業務代表:</label>
+							<input name="business_representatives" id="ii_business_representatives" class="easyui-textbox" />
+						</div></td>
+						<td><div class="fitem">
+							<label>行動電話:</label>
+							<input name="mobile_telephone" id="ii_mobile_telephone" class="easyui-textbox" />
+						</div></td>
+						<td><div class="fitem">
+							<label>訂貨電話:</label>
+							<input name="phone_orders" id="ii_phone_orders" class="easyui-textbox" />
+						</div></td>
+						<td><div class="fitem">
+							<label>入庫位置:</label>
+							<input name="storage_location" class="easyui-combobox"
+							        data-options="
+							            url:'../database/location.json',
+							            valueField:'locationid',
+							            textField:'locationname',
+							            panelHeight:'auto'
+										" />
+						</div></td>
+					</tr>
+					<tr>
+						<td><div class="fitem">
+							<label>1F退回:</label>
+							<input name="return_1F" class="easyui-textbox" />
+						</div></td>
+						<td colspan="3"><div class="fitem">
+							<label>庫存碼:</label>
+							<input name="stock_code" id="ii_stock_code" class="easyui-textbox" />
+						</div></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		</div>
+	</div>
+	<div id="ii_dlg-buttons">
+		<a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="iisaveUser()" style="width:90px">存檔</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#ii_dlg').dialog('close')" style="width:90px">取消</a>
+	</div>
+	<script type="text/javascript">
+		var iiurl;
+		function iidoSearch(){
+			$('#ii_dg').datagrid('load',{
+				iisearch_field: $('#iisearch_field').val(),
+				iisearch_what: $('#iisearch_what').val()
+			});
+		}
+		function iinewUser(){
+			$('#ii_dlg').dialog('open').dialog('setTitle','新增發票資料');
+			$('#ii_fm').form('clear');
+			iiurl = '../controllers/save_invoice.php';
+		}
+		function iieditUser(){
+			var row = $('#ii_dg').datagrid('getSelected');
+			if (row){
+				$('#ii_dlg').dialog('open').dialog('setTitle','修改發票資料');
+				$('#ii_fm').form('load',row);
+				iiurl = '../controllers/update_invoice.php?id='+row.id;
+			}
+		}
+		function iisaveUser(){
+			$('#ii_fm').form('submit',{
+				url: iiurl,
+				onSubmit: function(){
+					return $(this).form('validate');
+				},
+				success: function(result){
+					var result = eval('('+result+')');
+					if (result.errorMsg){
+						$.messager.show({
+							title: '錯誤',
+							msg: result.errorMsg
+						});
+					} else {
+						$('#ii_dlg').dialog('close');		// close the dialog
+						$('#ii_dg').datagrid('reload');	// reload the user data
+					}
+				}
+			});
+		}
+		function iidestroyUser(){
+			var row = $('#ii_dg').datagrid('getSelected');
+			if (row){
+				$.messager.confirm('Confirm','您確認要刪除這項發票資料嗎?',function(r){
+					if (r){
+						$.post('../controllers/destroy_invoice.php',{id:row.id},function(result){
+							if (result.success){
+								$('#ii_dg').datagrid('reload');	// reload the user data
+							} else {
+								$.messager.show({	// show error message
+									title: 'Error',
+									msg: result.errorMsg
+								});
+							}
+						},'json');
+					}
+				});
+			}
+		}
+		function calqty(){
+			// 總量=規格量x數量
+			var iida = $("#ii_drugspec_amount").textbox('getValue'); //取值
+			var iiqty = $("#ii_quantity").textbox('getValue');
+			var iitotal = parseFloat(iida) * parseFloat(iiqty);
+			$("#ii_total").textbox('setValue',iitotal);
+		}
+		function calamount(){
+			// 折讓後金額=發票金額-折讓金額-營業稅
+			var iiia = $("#ii_invoice_amount").textbox('getValue');
+			var iida = $("#ii_discount_amount").textbox('getValue');
+			var iibt = $("#ii_business_tax").textbox('getValue');
+			var iiafteramount = parseFloat(iiia) - parseFloat(iida) - parseFloat(iibt);
+			$("#ii_discount_afteramount").textbox('setValue',iiafteramount);
+		}
+		function calprice(){
+			// 單價=折讓後金額/總量
+			var iida = $("#ii_discount_afteramount").textbox('getValue');
+			var iitl = $("#ii_total").textbox('getValue');
+			var iiprice = parseFloat(iida) / parseFloat(iitl);
+			$("#ii_unit_price").textbox('setValue',iiprice);
+		}
+		function caldifference(){
+			// 價差=進價-單價
+			var iipp = $("#ii_purchase_price").textbox('getValue');
+			var iiup = $("#ii_unit_price").textbox('getValue');
+			var iidifference = parseFloat(iipp) - parseFloat(iiup);
+			$("#ii_price_difference").textbox('setValue',iidifference);
+		}
+		function iiExportUser(){
+			// 提示user
+			$.messager.alert('使用提示', '本匯出功能僅限已安裝[IE]及[Excel]者使用!!<br>請確認[IE]的安全性設定中: <b>已啟用</b>->[<font color=red>將未標示成安全的ActiveX控制項初始化並執行指令碼</font>]!!');
+			// EasyUI datagrid 動態導出Excel
+			// 取 Datagrid 的列
+			var rows = $('#ii_dg').datagrid('getRows');
+			var columns = $('#ii_dg').datagrid('options').columns[0];
+			var oXL = new ActiveXObject("Excel.Application"); // 創建AX對象excel
+			var oWB = oXL.Workbooks.Add(); // 取workbook對象
+			var oSheet = oWB.ActiveSheet; // 激活當前sheet
+			oSheet.name = "發票"; // 設置工作薄名稱
+			// 設置表頭
+			for (var i = 0; i < columns.length; i++) {
+			    oSheet.Cells(1, i + 1).value = columns[i].title;
+			}
+			// 設置内容部分
+			for (var i = 0; i < rows.length; i++) {
+			    // 動態獲取每一行每一列的數據值
+			    for (var j = 0; j < columns.length; j++) {
+			        oSheet.Cells(i + 2, j + 1).value = rows[i][columns[j].field];
+			    }
+			}
+			// oXL.Visible = true; // 設置excel可見屬性
+			oXL.Visible = true; // Make Excel invisible
+			// Save the sheet.
+			var today = new Date().format("yyyyMMdd");
+			oWB.SaveAs("%USERPROFILE%\\Desktop\\"+today+"_file.xls");
+			// Close Excel with the Quit method on the Application object.
+			oXL.Application.Quit();
+			// alert("Done!");
+		}
+	</script>
+	<style type="text/css">
+		#ii_fm{
+			margin:0;
+			padding:5px 5px;
+		}
+		.ftitle{
+			font-size:14px;
+			font-weight:bold;
+			padding:1px 0;
+			margin-bottom:1px;
+			border-bottom:1px solid #ccc;
+		}
+		.fitem{
+			margin-bottom:1px;
+		}
+		.fitem label{
+			display:inline-block;
+			width:90px;
+		}
+		.fitem input{
+			width:120px;
+		}
+	</style>

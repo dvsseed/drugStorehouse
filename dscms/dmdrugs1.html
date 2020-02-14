@@ -1,0 +1,450 @@
+	<h4>藥品資料維護</h4>
+	<p>請直接操作: Datagrid資料列.</p>
+	
+	<table id="dd_dg" class="easyui-datagrid" title="藥品資料" style="width:1200px;height:400px"
+			url="../controllers/get_drug2.php"
+			toolbar="#dd_toolbar" pagination="true" fitColumns="false"
+			rownumbers="true" singleSelect="true">
+		<thead>
+			<tr>
+				<th data-options="field:'barcode',width:120">條碼</th>
+				<th data-options="field:'drug_code',width:80,align:'left'">藥品代碼</th>
+				<th data-options="field:'stock_code',width:80,align:'left'">庫存碼</th>
+				<th data-options="field:'drug_english',width:100">藥品名稱(英文)</th>
+				<th data-options="field:'drug_chinese',width:100">藥品名稱(中文)</th>
+				<th data-options="field:'drug_element',width:100">成分</th>
+				<th data-options="field:'drug_ingredient',width:120">成分含量</th>
+				<th data-options="field:'drugspec_amount',width:120">規格量</th>
+				<th data-options="field:'drugspec_unit',width:120">規格單位</th>
+				<th data-options="field:'single_compound',width:120">單複方</th>
+				<th data-options="field:'drugprices_reference',width:120">價格</th>
+				<th data-options="field:'drugprices_startdate',width:120">參考日期</th>
+				<th data-options="field:'drugprices_expirationdate',width:120">截止日期</th>
+				<th data-options="field:'drug_manufacturer',width:120">藥商</th>
+				<th data-options="field:'drug_form',width:120">劑型</th>
+				<th data-options="field:'agents',width:120">代理商</th>
+				<th data-options="field:'uniform_numbers',width:120">統編</th>
+				<th data-options="field:'phone_orders',width:120">訂貨電話</th>
+				<th data-options="field:'business_representatives',width:120">業務代表</th>
+				<th data-options="field:'mobile_telephone',width:120">行動電話</th>
+				<th data-options="field:'purchase_price',width:120">進價</th>
+				<th data-options="field:'percentage_deduction',width:120">扣%</th>
+				<th data-options="field:'orderunit_rebates',width:120">訂貨單位與折扣方式</th>
+				<th data-options="field:'temporary_purchase',width:200">臨採方式</th>
+				<th data-options="field:'safety_stock',width:120">安全庫存量</th>
+				<th data-options="field:'selling_price',width:120">售價</th>
+				<th data-options="field:'staff_price',width:120">員工價</th>
+				<th data-options="field:'industry_price',width:120">同業價格</th>
+				<th data-options="field:'remark',width:120">備註</th>
+			</tr>
+		</thead>
+	</table>
+
+	<div id="dd_toolbar">
+		<select id="ddsearch_field">
+			<option value="barcode">條碼</option>
+			<option value="drug_code">藥品代碼</option>
+			<option value="stock_code">庫存碼</option>
+			<option value="drug_english">藥品英文名稱</option>
+		</select>
+		<input id="ddsearch_what" style="line-height:15px;border:1px solid #ccc" />
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="dddoSearch()">搜尋</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="ddnewUser()" style="color:blue;">新增</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="ddeditUser()" style="color:blue;">修改</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="dddestroyUser()" style="color:blue;">刪除</a>
+	</div>
+	
+	<div id="dd_dlg" class="easyui-dialog" style="width:1010px;height:560px;padding:1px 1px"
+			closed="true" buttons="#dd_dlg-buttons">
+		<div class="easyui-layout" style="width:1000px;height:550px;">
+
+		<div data-options="region:'east',split:true,title:'代理商查詢',iconCls:'icon-ok'" style="width:500px;height:100px">
+			<div id="ddda_toolbar" style="padding:3px">
+			  <select id="dddasearch_field">
+			    <option value="agents">代理商名稱</option>
+			    <option value="uniform_numbers">代理商統編</option>
+			  </select>
+			  <input id="dddasearch_what" style="line-height:15px;border:1px solid #ccc">
+			  <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="dddadoSearch()">搜尋代理商</a>
+			  <a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="dddadoAdd()">新增至藥品資料</a>
+			</div>
+			<script type="text/javascript">
+			  function dddadoSearch(){
+			    $('#ddda_dg').datagrid('load',{
+			      dddasearch_field: $('#dddasearch_field').val(),
+			      dddasearch_what: $('#dddasearch_what').val()
+			      });
+			    }
+			  function dddadoAdd(){
+				var row = $('#ddda_dg').datagrid('getSelected');
+				if (row){
+					//assign value to dd_fm
+					$("#dd_agents").textbox('setValue',row.agents);
+					$("#dd_uniform_numbers").textbox('setValue',row.uniform_numbers);
+					$("#dd_phone_orders").textbox('setValue',row.phone_orders);
+				}
+			  }
+			</script>
+			<table id="ddda_dg" style="width:1000px;height:200px" toolbar="#ddda_toolbar"></table>
+			<script language="javascript">
+			  $(document).ready(function(){
+			    $('#ddda_dg').datagrid({
+			      url:'../controllers/get_agents1.php',
+			      columns:[[
+			        {field:'agents',title:'代理商',width:120,align:'center'},
+			        {field:'uniform_numbers',title:'代理商統編',width:70,align:'center'},
+			        {field:'payment_method',title:'收款方式',width:60,align:'right'},
+			        {field:'term_receivables',title:'收款期限',width:60,align:'right'},
+			        {field:'percentage_deduction',title:'扣%',width:60,align:'right'},
+			        {field:'payee_account',title:'收款人戶名',width:60,align:'left'},
+			        {field:'beneficiary_bank',title:'收款銀行',width:60,align:'right'},
+			        {field:'branch_categories',title:'分行別',width:60,align:'center'},
+			        {field:'beneficiary_account',title:'收款人帳號',width:80,align:'left'},
+			        {field:'fee_burden',title:'手續費負擔',width:60,align:'right'},
+			        {field:'payee_uninumbers',title:'收款人統編',width:70,align:'right'},
+			        {field:'accounts_notification',title:'帳款通知方式',width:60,align:'center'},
+			        {field:'e_mail',title:'電子郵件',width:80,align:'right'},
+			        {field:'fax_number',title:'傳真號碼',width:80,align:'left'},
+			        {field:'phone_number',title:'電話號碼',width:80,align:'left'},
+			        {field:'phone_orders',title:'訂貨電話',width:80,align:'left'},
+			        ]],
+			      singleSelect:true,
+			      collapsible:true,
+			      fitColumns:false,
+			      pagination:true,
+			      pageSize:5,
+			      pageList: [5,10,20,50,100],
+			      rownumbers:true
+			    });
+			  });
+			</script>
+		</div>
+
+		<div data-options="region:'west',split:true,title:'健保藥品查詢',iconCls:'icon-ok'" style="width:500px;height:100px">
+			<div id="ddhcd_toolbar" style="padding:1px">
+			  <select id="ddhcdsearch_field">
+			    <option value="drug_code">藥品代碼</option>
+				<option value="stock_code">庫存碼</option>
+			    <option value="drug_english">藥品英文名稱</option>
+			  </select>
+			  <input id="ddhcdsearch_what" style="line-height:15px;border:1px solid #ccc">
+			  <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="ddhcddoSearch()">搜尋藥品</a>
+			  <a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="ddhcddoAdd()">新增至藥品資料</a>
+			</div>
+			<script type="text/javascript">
+			  function ddhcddoSearch(){
+			    $('#ddhcd_dg').datagrid('load',{
+			      ddhcdsearch_field: $('#ddhcdsearch_field').val(),
+			      ddhcdsearch_what: $('#ddhcdsearch_what').val()
+			      });
+			    }
+			  function ddhcddoAdd(){
+				var row = $('#ddhcd_dg').datagrid('getSelected');
+			  	// $.messager.alert('訊息','新增!'+row.drug_code);
+				if (row){
+					//assign value to dd_fm
+					$("#dd_drug_code").textbox('setValue',row.drug_code);
+					$("#dd_stock_code").textbox('setValue',row.stock_code);
+					$("#dd_drug_english").textbox('setValue',row.drug_english);
+					$("#dd_drug_element").textbox('setValue',row.drug_element);
+					$("#dd_drug_ingredient").textbox('setValue',row.drug_ingredient);
+					$("#dd_drugspec_amount").textbox('setValue',row.drugspec_amount);
+					$("#dd_drugspec_unit").textbox('setValue',row.drugspec_unit);
+					$("#dd_single_compound").textbox('setValue',row.single_compound);
+					$("#dd_drugprices_reference").textbox('setValue',row.drugprices_reference);
+					$("#dd_drugprices_startdate").textbox('setValue',row.drugprices_startdate);
+					$("#dd_drugprices_expirationdate").textbox('setValue',row.drugprices_expirationdate);
+					$("#dd_drug_manufacturer").textbox('setValue',row.drug_manufacturer);
+					$("#dd_drug_form").textbox('setValue',row.drug_form);
+				}
+			  }
+			</script>
+			<table id="ddhcd_dg" style="width:1000px;height:200px" toolbar="#ddhcd_toolbar"></table>
+			<script language="javascript">
+			  $(document).ready(function(){
+			    $('#ddhcd_dg').datagrid({
+			      url:'../controllers/get_drugs1.php',
+			      columns:[[
+			        {field:'single_compound',title:'單複方註記',width:60,align:'center'},
+			        {field:'drug_code',title:'藥品代碼',width:90,align:'center'},
+			        {field:'stock_code',title:'庫存碼',width:150,align:'center'},
+			        {field:'drugprices_reference',title:'參考金額',width:60,align:'right'},
+			        {field:'drugprices_startdate',title:'參考日期',width:60,align:'right'},
+			        {field:'drugprices_expirationdate',title:'截止日期',width:60,align:'right'},
+			        {field:'drug_english',title:'英文名稱',width:180,align:'left'},
+			        {field:'drugspec_amount',title:'規格量',width:50,align:'right'},
+			        {field:'drugspec_unit',title:'規格單位',width:50,align:'center'},
+			        {field:'drug_element',title:'成份',width:180,align:'left'},
+			        {field:'drug_ingredient',title:'成份含量',width:50,align:'right'},
+			        {field:'content_unit',title:'含量單位',width:50,align:'right'},
+			        {field:'drug_form',title:'劑型',width:50,align:'center'},
+			        {field:'drug_classification',title:'藥理分類代碼',width:70,align:'right'},
+			        {field:'drug_manufacturer',title:'製造廠名稱',width:180,align:'left'},
+			        ]],
+			      singleSelect:true,
+			      collapsible:true,
+			      fitColumns:false,
+			      pagination:true,
+			      pageSize:5,
+			      pageList: [5,10,20,50,100],
+			      rownumbers:true
+			    });
+			  });
+			</script>
+		</div>
+
+		<div data-options="region:'south',split:true,title:'藥品資料',iconCls:'icon-ok'" style="height:300px">
+			<form id="dd_fm" method="post" novalidate>
+				<table cellpadding="0" cellspacing="0" width="100%" align="center" border="0">
+					<tr>
+						<td><div class="fitem">
+							<label>條碼:</label>
+							<input name="barcode" class="easyui-numberbox" required="true">
+						</div></td>
+						<td><div class="fitem">
+							<label>藥品代碼:</label>
+							<input name="drug_code" id="dd_drug_code" class="easyui-textbox">
+						</div></td>
+						<td><div class="fitem">
+							<label>藥品名稱(英文):</label>
+							<input name="drug_english" id="dd_drug_english" class="easyui-textbox">
+						</div></td>
+						<td><div class="fitem">
+							<label>藥品名稱(中文):</label>
+							<input name="drug_chinese" class="easyui-textbox">
+						</div></td>
+					</tr>
+					<tr>
+						<td><div class="fitem">
+							<label>成分:</label>
+							<input name="drug_element" id="dd_drug_element" class="easyui-textbox">
+						</div></td>
+						<td><div class="fitem">
+							<label>成分含量:</label>
+							<input name="drug_ingredient" id="dd_drug_ingredient" class="easyui-textbox">
+						</div></td>
+						<td><div class="fitem">
+							<label>規格量:</label>
+							<input name="drugspec_amount" id="dd_drugspec_amount" class="easyui-textbox">
+						</div></td>
+						<td><div class="fitem">
+							<label>規格單位:</label>
+							<input name="drugspec_unit" id="dd_drugspec_unit" class="easyui-textbox">
+						</div></td>
+					</tr>
+					<tr>
+						<td><div class="fitem">
+							<label>單複方:</label>
+							<input name="single_compound" id="dd_single_compound" class="easyui-textbox">
+						</div></td>
+						<td><div class="fitem">
+							<label>健保價:</label>
+							<input name="drugprices_reference" id="dd_drugprices_reference" class="easyui-textbox">
+						</div></td>
+						<td><div class="fitem">
+							<label>參考日期:</label>
+							<input name="drugprices_startdate" id="dd_drugprices_startdate" class="easyui-textbox">
+						</div></td>
+						<td><div class="fitem">
+							<label>截止日期:</label>
+							<input name="drugprices_expirationdate" id="dd_drugprices_expirationdate" class="easyui-textbox">
+						</div></td>
+					</tr>
+					<tr>
+						<td><div class="fitem">
+							<label>製造商:</label>
+							<input name="drug_manufacturer" id="dd_drug_manufacturer" class="easyui-textbox">
+						</div></td>
+						<td><div class="fitem">
+							<label>劑型:</label>
+							<input name="drug_form" id="dd_drug_form" class="easyui-textbox">
+						</div></td>
+						<td colspan="2"><div class="fitem">
+							<label>庫存碼:</label>
+							<input name="stock_code" id="dd_stock_code" class="easyui-textbox">
+						</div></td>
+					</tr>
+					<tr bgcolor="#FFFF00">
+						<td><div class="fitem">
+							<label>代理商:</label>
+							<input name="agents" id="dd_agents" class="easyui-textbox">
+						</div></td>
+						<td><div class="fitem">
+							<label>統編:</label>
+							<input name="uniform_numbers" id="dd_uniform_numbers" class="easyui-textbox">
+						</div></td>
+						<td><div class="fitem">
+							<label>訂貨電話:</label>
+							<input name="phone_orders" id="dd_phone_orders" class="easyui-textbox">
+						</div></td>
+						<td><div class="fitem">
+							<label>業務代表:</label>
+							<input name="business_representatives" class="easyui-textbox">
+						</div></td>
+					</tr>
+					<tr bgcolor="#FFFF00">
+						<td><div class="fitem">
+							<label>行動電話:</label>
+							<input name="mobile_telephone" class="easyui-textbox">
+						</div></td>
+						<td><div class="fitem">
+							<label>進價:</label>
+							<input name="purchase_price" class="easyui-textbox">
+						</div></td>
+						<td><div class="fitem">
+							<label>扣%:</label>
+							<input name="percentage_deduction" class="easyui-textbox">
+						</div></td>
+						<td><div class="fitem">
+							<label>訂貨單位與折扣方式:</label>
+							<input name="orderunit_rebates" class="easyui-textbox">
+						</div></td>
+					</tr>
+					<tr bgcolor="#FFFF00">
+						<td><div class="fitem">
+							<label>臨採方式:</label>
+							<input name="temporary_purchase" class="easyui-combobox"
+							        data-options="
+							            url:'../database/purchase.json',
+							            valueField:'purchaseid',
+							            textField:'purchasename',
+							            panelHeight:'auto'
+										">
+						</div></td>
+						<td><div class="fitem">
+							<label>安全庫存量:</label>
+							<input name="safety_stock" class="easyui-textbox">
+						</div></td>
+						<td><div class="fitem">
+							<label>售價:</label>
+							<input name="selling_price" class="easyui-textbox">
+						</div></td>
+						<td><div class="fitem">
+							<label>員工價:</label>
+							<input name="staff_price" class="easyui-textbox">
+						</div></td>
+					</tr>
+					<tr bgcolor="#FFFF00">
+						<td><div class="fitem">
+							<label>同業價格:</label>
+							<input name="industry_price" class="easyui-textbox">
+						</div></td>
+						<td colspan="3"><div class="fitem">
+							<label>備註:</label>
+							<input name="remark" class="easyui-textbox" style="width:300px">
+						</div></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		</div>
+	</div>
+	<div id="dd_dlg-buttons">
+		<a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="ddsaveAgent()" style="width:90px">存入代理商</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="ddsaveUser()" style="width:90px">存檔</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dd_dlg').dialog('close')" style="width:90px">取消</a>
+	</div>
+	<script type="text/javascript">
+		var ddurl;
+		function dddoSearch(){
+			$('#dd_dg').datagrid('load',{
+				ddsearch_field: $('#ddsearch_field').val(),
+				ddsearch_what: $('#ddsearch_what').val()
+			});
+		}
+		function ddnewUser(){
+			$('#dd_dlg').dialog('open').dialog('setTitle','新增藥品資料');
+			$('#dd_fm').form('clear');
+			ddurl = '../controllers/save_drug.php';
+		}
+		function ddeditUser(){
+			var row = $('#dd_dg').datagrid('getSelected');
+			if (row){
+				$('#dd_dlg').dialog('open').dialog('setTitle','修改藥品資料');
+				$('#dd_fm').form('load',row);
+				ddurl = '../controllers/update_drug.php?id='+row.id;
+			}
+		}
+		function ddsaveAgent(){
+			$('#dd_fm').form('submit',{
+				url: '../controllers/save_agents1.php',
+				onSubmit: function(){
+					return $(this).form('validate');
+				},
+				success: function(result){
+					var result = eval('('+result+')');
+					if (result.errorMsg){
+						$.messager.show({
+							title: '錯誤',
+							msg: result.errorMsg
+						});
+					} else {
+						$('#dd_dlg').dialog('close');		// close the dialog
+						$('#dd_dg').datagrid('reload');	// reload the user data
+					}
+				}
+			});
+		}
+		function ddsaveUser(){
+			$('#dd_fm').form('submit',{
+				url: ddurl,
+				onSubmit: function(){
+					return $(this).form('validate');
+				},
+				success: function(result){
+					var result = eval('('+result+')');
+					if (result.errorMsg){
+						$.messager.show({
+							title: '錯誤',
+							msg: result.errorMsg
+						});
+					} else {
+						$('#dd_dlg').dialog('close');		// close the dialog
+						$('#dd_dg').datagrid('reload');	// reload the user data
+					}
+				}
+			});
+		}
+		function dddestroyUser(){
+			var row = $('#dd_dg').datagrid('getSelected');
+			if (row){
+				$.messager.confirm('Confirm','您確認要刪除這項藥品資料嗎?',function(r){
+					if (r){
+						$.post('../controllers/destroy_drug.php',{id:row.id},function(result){
+							if (result.success){
+								$('#dd_dg').datagrid('reload');	// reload the user data
+							} else {
+								$.messager.show({	// show error message
+									title: 'Error',
+									msg: result.errorMsg
+								});
+							}
+						},'json');
+					}
+				});
+			}
+		}
+	</script>
+	<style type="text/css">
+		#dd_fm{
+			margin:0;
+			padding:1px 1px;
+		}
+		.ftitle{
+			font-size:14px;
+			font-weight:bold;
+			padding:1px 0;
+			margin-bottom:1px;
+			border-bottom:1px solid #ccc;
+		}
+		.fitem{
+			margin-bottom:1px;
+		}
+		.fitem label{
+			display:inline-block;
+			width:120px;
+		}
+		.fitem input{
+			width:120px;
+		}
+	</style>

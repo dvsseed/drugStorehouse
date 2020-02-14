@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>DM庫存管理</title>
+  <link rel="stylesheet" type="text/css" href="../jquery/themes/default/easyui.css">
+  <link rel="stylesheet" type="text/css" href="../jquery/themes/icon.css">
+  <script type="text/javascript" src="../jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="../jquery/jquery.easyui.min.js"></script>
+  <script type="text/javascript" src="../jquery/locale/easyui-lang-zh_TW.js"></script>
+  <script type="text/javascript" src="../jquery/js-date.js"></script>
+  <style>
+    * {font-size:14px;}
+    a {text-decoration:none;}
+    a:hover {text-decoration:underline;background-color:yellow;}
+    #west {width:150px;}
+    #west-inner {border-top:0px;border-right:0px;border-bottom:0px;}
+    .nav {padding:5px;}
+    .tab {padding:10px;}
+    #north {height:55px;overflow:hidden;}
+    #north-table {width:100%;border-spacing:0px}
+    #north-left {text-align:left;padding:5px;}
+    #north-right {text-align:right;padding:5px;}
+  </style>
+</head>
+<body class="easyui-layout">
+  <div id="north" title="庫存管理系統--CMS" data-options="region:'north',border:false,collapsible:true,tools:'#tools'">
+    <table id="north-table">
+      <tr>
+        <td id="north-left">
+        <span class="show-Today">
+        <script language="javascript">
+          respToday(null);
+        </script>
+        </span>
+        </td>
+        <td id="north-right">
+          <a href="#">首頁</a>．
+          <a href="#">新聞</a>．
+          <a href="#">留言</a>．
+          <a href="#">檔案</a>．
+          <a href="#">管理</a>．
+          <a href="#">登出</a>．
+          <select id="cc" class="easyui-combobox" name="dept" style="width:80px;height:18px" panelHeight="108">
+            <option value="default">主題布景</option>
+            <option value="default">Default</option>
+            <option value="metro">Metro</option>
+            <option value="bootrap">Bootstrap</option>
+            <option value="gray">Gray</option>
+            <option value="black">Black</option>
+          </select>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div id="tools">
+   <a href="#" id="logout" class="icon-remove" title="登出"></a>
+  </div>
+  <div title="導覽" data-options="region:'west',border:true" id="west">
+    <div class="easyui-accordion" id="west-inner">
+      <div title="Main" class="nav">
+        ．首頁<br>
+        ．新聞<br>
+        ．留言<br>
+        ．檔案<br>
+        ．管理<br>
+        ．登出<br>
+      </div>
+      <div title="標題 1" class="nav">
+        ．連結 1<br>
+        ．連結 2<br>
+        ．連結 3<br>
+      </div>
+    </div>
+  </div>
+  <div data-options="region:'center',border:false" id="center">
+    <div class="easyui-tabs" data-options="fit:'true'">
+      <div class="tab" title="首頁">
+        Welcom to 庫存管理CMS!
+      </div>
+    </div>
+  </div>
+  <script>
+    $(document).ready(function(){
+      $("#logout").bind("click",function(){
+        $.messager.confirm("確認","確定要登出系統嗎",logout);
+        });
+      function logout(btn){
+        if (btn) {$.messager.alert("訊息","已登出!");}
+        }
+      });
+  </script>
+</body>
+</html>
