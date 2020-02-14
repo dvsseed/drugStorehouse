@@ -8,7 +8,7 @@
 // mysql_query("SET NAMES 'utf8'");
 
 // $conn = new mysqli('127.0.0.1', 'druguser', '0HfpaWyU50v3', 'drugstorehouse');
-$conn = new mysqli('127.0.0.1', 'root', 'p@$$w0rd', 'drugstorehouse');
+$conn = new mysqli('127.0.0.1', 'root', 'password@root', 'drugstorehouse');
 
 if ($conn->connect_errno) {
     echo "Sorry, this website is experiencing problems.";
