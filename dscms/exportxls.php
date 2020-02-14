@@ -3,7 +3,7 @@
 //EDIT YOUR MySQL Connection Info:
 $DB_Server = "127.0.0.1"; //your MySQL Server
 $DB_Username = "root"; //your MySQL User Name
-$DB_Password = "sql@root"; //your MySQL Password
+$DB_Password = "password@root"; //your MySQL Password
 $DB_DBName = "drugstorehouse"; //your MySQL Database Name
 $DB_TBLName = "invoice_info"; //your MySQL Table Name
 
